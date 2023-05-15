@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct TimeLabelView: View {
-    let timeText = 6..<23
+    @State var taskName: String
+    @State var colors: Color
+    let timeText = 6..<24
     let timeTextWidth: CGFloat = 40
     
     var body: some View {
         ZStack {
+            HStack {
+                Divider()
+            }
+            .padding(.leading, timeTextWidth)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
             VStack(spacing: 0) {
+                NavigationBarView(naviTitle: taskName, enumNavi: .dismiss)
+                    .padding(.horizontal, -20)
+                
                 ForEach(timeText, id: \.self) { i in
                     VStack(spacing: 0) {
                         HStack(spacing: 0) {
@@ -22,7 +33,7 @@ struct TimeLabelView: View {
                                 .padding(.horizontal, 5)
                                 .frame(width: timeTextWidth)
                             
-                            ButtonView()
+                            ButtonView(colors: colors)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -30,40 +41,35 @@ struct TimeLabelView: View {
                     }
                 }
             }
-            
-            HStack {
-                Divider()
-            }
-            .padding(.leading, timeTextWidth)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, 20)
+        .navigationBarBackButtonHidden()
     }
 }
 
 struct ButtonView: View {
+    @State var colors: Color
     @State private var boolArray = [false, false, false, false, false]
     @State private var draggedColumnIndex: Int?
-    @State private var color: Color = .clear
-    @State private var lastGesture: Int = 0
     let timeCheckButtonCount = 0..<5
     
     var body: some View {
         ForEach(timeCheckButtonCount, id: \.self) { index in
             Button {
-//                isClickTest[col].toggle()
+                boolArray[index] = true
             } label: {
                 RoundedRectangle(cornerRadius: 0)
-                    .fill(boolArray[index] ? Color.green : Color.gray)
+                    .fill(boolArray[index] ? colors : Color.gray.opacity(0.1))
             }
             .frame(width: 60)
             .padding(.vertical, 4)
             .simultaneousGesture(
-                DragGesture()
+                DragGesture(minimumDistance: 0)
                     .onChanged { value in
                         let dragPosition = value.location
-                        let columnIndex = Int(dragPosition.x / 60)
-                        if columnIndex != draggedColumnIndex {
+                        let dragPositionInt = Int(dragPosition.x)
+                        let columnIndex = dragPositionInt / 60
+                        if columnIndex != draggedColumnIndex && columnIndex < boolArray.count {
                             draggedColumnIndex = columnIndex
                             boolArray[columnIndex] = true
                         }
@@ -78,6 +84,6 @@ struct ButtonView: View {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView()
+        TimeLabelView(taskName: "TEST", colors: .white)
     }
 }
