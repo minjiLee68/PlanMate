@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct TimeLabelView: View {
+    @State var selectTask = "TASK 0"
+    var selectTasks = ["TASK 0", "TASK 1", "TASK 2"]
+    
     @State var taskName: String
     @State var colors: Color
     let timeText = 6..<24
@@ -22,8 +25,21 @@ struct TimeLabelView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 0) {
-                NavigationBarView(naviTitle: taskName, enumNavi: .dismiss)
-                    .padding(.horizontal, -20)
+                VStack(spacing: 5) {
+                    NavigationBarView(naviTitle: selectTask, enumNavi: .dismiss)
+                        .padding(.horizontal, -20)
+                    
+                    Picker("selectTask", selection: $selectTask) {
+                            ForEach(selectTasks, id: \.self) {
+                              Text($0)
+                            }
+                          }
+                          .pickerStyle(.segmented)
+                          .padding(3)
+                          .cornerRadius(5)
+                          .padding(.vertical, 3)
+                }
+                .background(Color.white)
                 
                 ForEach(timeText, id: \.self) { i in
                     VStack(spacing: 0) {
@@ -33,7 +49,16 @@ struct TimeLabelView: View {
                                 .padding(.horizontal, 5)
                                 .frame(width: timeTextWidth)
                             
-                            ButtonView(colors: colors)
+                            switch selectTask {
+                            case "TASK 0":
+                                ButtonView(colors: .red.opacity(0.4))
+                            case "TASK 1":
+                                ButtonView(colors: .green.opacity(0.4))
+                            case "TASK 2":
+                                ButtonView(colors: .yellow.opacity(0.4))
+                            default:
+                                ButtonView(colors: .white)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
