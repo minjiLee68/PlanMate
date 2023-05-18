@@ -12,7 +12,7 @@ struct TimeLabelView: View {
     var selectTasks = ["TASK 0", "TASK 1", "TASK 2"]
     
     @State var taskName: String
-    @State var colors: Color
+//    @State var colors: Color
     let timeText = 6..<24
     let timeTextWidth: CGFloat = 40
     
@@ -49,16 +49,7 @@ struct TimeLabelView: View {
                                 .padding(.horizontal, 5)
                                 .frame(width: timeTextWidth)
                             
-                            switch selectTask {
-                            case "TASK 0":
-                                ButtonView(colors: .red.opacity(0.4))
-                            case "TASK 1":
-                                ButtonView(colors: .green.opacity(0.4))
-                            case "TASK 2":
-                                ButtonView(colors: .yellow.opacity(0.4))
-                            default:
-                                ButtonView(colors: .white)
-                            }
+                            ButtonView(selectTask: $selectTask)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -73,18 +64,20 @@ struct TimeLabelView: View {
 }
 
 struct ButtonView: View {
-    @State var colors: Color
+    @Binding var selectTask: String
     @State private var boolArray = [false, false, false, false, false]
+    @State private var buttonColorList = [TestColorModel]()
     @State private var draggedColumnIndex: Int?
     let timeCheckButtonCount = 0..<5
     
     var body: some View {
         ForEach(timeCheckButtonCount, id: \.self) { index in
             Button {
-                boolArray[index] = true
+                boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
+                testColorData() // 색상 업데이트
             } label: {
                 RoundedRectangle(cornerRadius: 0)
-                    .fill(boolArray[index] ? colors : Color.gray.opacity(0.1))
+                    .fill(boolArray[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
             }
             .frame(width: 60)
             .padding(.vertical, 4)
@@ -96,10 +89,45 @@ struct ButtonView: View {
                         let columnIndex = dragPositionInt / 60
                         if columnIndex != draggedColumnIndex && columnIndex < boolArray.count {
                             draggedColumnIndex = columnIndex
-                            boolArray[columnIndex] = true
+                            boolArray[columnIndex].toggle() // 드래그 동작 시 버튼 색상을 변경
+                            testColorData() // 색상 업데이트
                         }
                     }
             )
+        }
+    }
+    
+    func testColorData() {
+        if selectTask == "TASK 0"{
+            buttonColorListAppend(color: .pink.opacity(0.4))
+        } else if selectTask == "TASK 1" {
+            buttonColorListAppend(color: .green.opacity(0.4))
+        } else {
+            buttonColorListAppend(color: .yellow.opacity(0.4))
+        }
+    }
+    
+    func buttonColorListAppend(color: Color) {
+        if buttonColorList.count >= 5 {
+            return
+        }
+        buttonColorList.append(TestColorModel(color: color))
+//        if !buttonColorList.contains(where: { $0.color == color }) {
+//            buttonColorList.append(TestColorModel(color: color))
+//        }
+    }
+    
+    func colors(forIndex index: Int) -> Color {
+        if buttonColorList.isEmpty {
+            if selectTask == "TASK 0" {
+                return .pink.opacity(0.4)
+            } else if selectTask == "TASK 1" {
+                return .green.opacity(0.4)
+            } else {
+                return .yellow.opacity(0.4)
+            }
+        } else {
+            return buttonColorList[index].color
         }
     }
 }
@@ -109,6 +137,6 @@ struct ButtonView: View {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(taskName: "TEST", colors: .white)
+        TimeLabelView(taskName: "TEST")
     }
 }

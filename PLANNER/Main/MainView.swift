@@ -32,7 +32,7 @@ struct MainView: View {
             }
             
             NavigationLink(
-                destination: TimeLabelView(taskName: "TASK 0", colors: colors[0]),
+                destination: TimeLabelView(taskName: "TASK 0"),
                 isActive: $isTaskTimeLineEd,
                 label: {}
             )
