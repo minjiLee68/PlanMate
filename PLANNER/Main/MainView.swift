@@ -10,10 +10,13 @@ import SwiftUI
 struct MainView: View {
     @State private var isTaskClick = false
     @State private var isTaskTimeLineEd = false
+    @State private var isColorPick = false
+    @State private var colorIndex = 0
     @State private var taskLabel = ""
     @State private var totalTime = ""
+    @State var pickColor = ""
     
-    private let colors: [Color] = [.red.opacity(0.4), .green.opacity(0.3), .yellow.opacity(0.4)]
+    @State private var colors: [Color] = [.red.opacity(0.4), .orange.opacity(0.4), .yellow.opacity(0.4)]
 
     var body: some View {
         NavigationStack {
@@ -30,9 +33,17 @@ struct MainView: View {
             .onAppear {
                 taskLabel = "TASK 0"
             }
+            .overlay {
+                if isColorPick {
+                    ColorPaletteView(pickColor: $pickColor)
+                        .onTapGesture {
+                            isColorPick = false
+                        }
+                }
+            }
             
             NavigationLink(
-                destination: TimeLabelView(taskName: "TASK 0"),
+                destination: TimeLabelView(selectTasks: ["TASK 0", "TASK 1", "TASK 2"], colorList: colors),
                 isActive: $isTaskTimeLineEd,
                 label: {}
             )
@@ -69,12 +80,21 @@ struct MainView: View {
                         
                         Spacer()
                         
-                        Circle()
-                            .frame(width: 20)
-                            .foregroundColor(colors[i])
+                        Button {
+                            isColorPick.toggle()
+                            colorIndex = i
+                        } label: {
+                            Circle()
+                                .frame(width: 20)
+                                .foregroundColor(colors[i])
+                        }
                     }
                     
                     Divider()
+                }
+                .onChange(of: pickColor) { newValue in
+                    isColorPick = false
+                    colors[colorIndex] = EnumColor.colorPick(color: pickColor)
                 }
             }
         }

@@ -9,10 +9,9 @@ import SwiftUI
 
 struct TimeLabelView: View {
     @State var selectTask = "TASK 0"
-    var selectTasks = ["TASK 0", "TASK 1", "TASK 2"]
-    
-    @State var taskName: String
-//    @State var colors: Color
+    @State var selectTasks: [String]
+    @State var colorList: [Color]
+    @State var color: Color = .white
     let timeText = 6..<24
     let timeTextWidth: CGFloat = 40
     
@@ -25,19 +24,20 @@ struct TimeLabelView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 0) {
-                VStack(spacing: 5) {
+                VStack(spacing: 0) {
                     NavigationBarView(naviTitle: selectTask, enumNavi: .dismiss)
                         .padding(.horizontal, -20)
                     
                     Picker("selectTask", selection: $selectTask) {
-                            ForEach(selectTasks, id: \.self) {
-                              Text($0)
-                            }
-                          }
-                          .pickerStyle(.segmented)
-                          .padding(3)
-                          .cornerRadius(5)
-                          .padding(.vertical, 3)
+                        ForEach(selectTasks, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.automatic)
+                    .accentColor(.black.opacity(0.7))
+                    .font(.callout)
+                    .cornerRadius(5)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .background(Color.white)
                 
@@ -49,11 +49,18 @@ struct TimeLabelView: View {
                                 .padding(.horizontal, 5)
                                 .frame(width: timeTextWidth)
                             
-                            ButtonView(selectTask: $selectTask)
+                            ButtonView(selectTask: $selectTask, color: $color)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         Divider()
+                    }
+                }
+            }
+            .onChange(of: selectTask) { newValue in
+                for task in selectTasks.indices {
+                    if selectTask == selectTasks[task] {
+                        color = colorList[task]
                     }
                 }
             }
@@ -65,6 +72,7 @@ struct TimeLabelView: View {
 
 struct ButtonView: View {
     @Binding var selectTask: String
+    @Binding var color: Color
     @State private var boolArray = [false, false, false, false, false]
     @State private var buttonColorList = [TestColorModel]()
     @State private var draggedColumnIndex: Int?
@@ -99,11 +107,11 @@ struct ButtonView: View {
     
     func testColorData() {
         if selectTask == "TASK 0"{
-            buttonColorListAppend(color: .pink.opacity(0.4))
+            buttonColorListAppend(color: color)
         } else if selectTask == "TASK 1" {
-            buttonColorListAppend(color: .green.opacity(0.4))
+            buttonColorListAppend(color: color)
         } else {
-            buttonColorListAppend(color: .yellow.opacity(0.4))
+            buttonColorListAppend(color: color)
         }
     }
     
@@ -120,11 +128,11 @@ struct ButtonView: View {
     func colors(forIndex index: Int) -> Color {
         if buttonColorList.isEmpty {
             if selectTask == "TASK 0" {
-                return .pink.opacity(0.4)
+                return color
             } else if selectTask == "TASK 1" {
-                return .green.opacity(0.4)
+                return color
             } else {
-                return .yellow.opacity(0.4)
+                return color
             }
         } else {
             return buttonColorList[index].color
@@ -137,6 +145,6 @@ struct ButtonView: View {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(taskName: "TEST")
+        TimeLabelView(selectTasks: ["test"], colorList: [.white, .black])
     }
 }
