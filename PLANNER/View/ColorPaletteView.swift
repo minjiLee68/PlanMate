@@ -24,31 +24,20 @@ struct ColorPaletteView: View {
     @Binding var pickColor: String
     
     var body: some View {
-        ZStack {
-            Color.gray.opacity(0.3)
-                .ignoresSafeArea()
-            
-            VStack {
-                ForEach(colors, id: \.self) { row in
-                    HStack {
-                        ForEach(row, id: \.self) { color in
-                            Button {
-                                pickColor = color
-                            } label: {
-                                Circle()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(EnumColor.colorPick(color: color))
-                            }
+        VStack {
+            ForEach(colors, id: \.self) { row in
+                HStack {
+                    ForEach(row, id: \.self) { color in
+                        Button {
+                            pickColor = color
+                        } label: {
+                            Circle()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(EnumColor.colorPick(color: color))
                         }
                     }
                 }
             }
-            .frame(
-                width: 280,
-                height: 150
-            )
-            .background(Color.white)
-            .cornerRadius(15)
         }
     }
 }

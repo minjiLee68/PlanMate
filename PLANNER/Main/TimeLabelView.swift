@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TimeLabelView: View {
-    @State var selectTask = "TASK 0"
+    @State var selectTask: String
     @State var selectTasks: [String]
     @State var colorList: [Color]
     @State var color: Color = .white
@@ -64,6 +64,9 @@ struct TimeLabelView: View {
                     }
                 }
             }
+            .onAppear {
+                color = colorList.first ?? .white
+            }
         }
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden()
@@ -76,14 +79,16 @@ struct ButtonView: View {
     @State private var boolArray = [false, false, false, false, false]
     @State private var buttonColorList = [TestColorModel]()
     @State private var draggedColumnIndex: Int?
+    @State private var indextest = 0
     let timeCheckButtonCount = 0..<5
     
     var body: some View {
-        ForEach(timeCheckButtonCount, id: \.self) { index in
+        ForEach(boolArray.indices, id: \.self) { index in
             Button {
-                boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
+//                boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
                 testColorData() // 색상 업데이트
             } label: {
+//                Text("\(indextest)")
                 RoundedRectangle(cornerRadius: 0)
                     .fill(boolArray[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
             }
@@ -95,6 +100,7 @@ struct ButtonView: View {
                         let dragPosition = value.location
                         let dragPositionInt = Int(dragPosition.x)
                         let columnIndex = dragPositionInt / 60
+                        
                         if columnIndex != draggedColumnIndex && columnIndex < boolArray.count {
                             draggedColumnIndex = columnIndex
                             boolArray[columnIndex].toggle() // 드래그 동작 시 버튼 색상을 변경
@@ -120,9 +126,6 @@ struct ButtonView: View {
             return
         }
         buttonColorList.append(TestColorModel(color: color))
-//        if !buttonColorList.contains(where: { $0.color == color }) {
-//            buttonColorList.append(TestColorModel(color: color))
-//        }
     }
     
     func colors(forIndex index: Int) -> Color {
@@ -140,11 +143,13 @@ struct ButtonView: View {
     }
 }
 
-
+struct ButtonStateView {
+    var isToggled: Bool = false
+}
 
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(selectTasks: ["test"], colorList: [.white, .black])
+        TimeLabelView(selectTask: "", selectTasks: ["test"], colorList: [.white, .black])
     }
 }

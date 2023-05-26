@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var taskList = ["TASK 1", "TASK 2", "TASK 3"]
     @State private var isTaskClick = false
     @State private var isTaskTimeLineEd = false
     @State private var isColorPick = false
@@ -33,17 +34,9 @@ struct MainView: View {
             .onAppear {
                 taskLabel = "TASK 0"
             }
-            .overlay {
-                if isColorPick {
-                    ColorPaletteView(pickColor: $pickColor)
-                        .onTapGesture {
-                            isColorPick = false
-                        }
-                }
-            }
             
             NavigationLink(
-                destination: TimeLabelView(selectTasks: ["TASK 0", "TASK 1", "TASK 2"], colorList: colors),
+                destination: TimeLabelView(selectTask: taskList.first ?? "", selectTasks: taskList, colorList: colors),
                 isActive: $isTaskTimeLineEd,
                 label: {}
             )
@@ -66,15 +59,15 @@ struct MainView: View {
                 }
             }
             
-            ForEach(0..<3, id: \.self) { i in
+            ForEach(0..<taskList.count, id: \.self) { i in
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 0) {
                         Button {
                             isTaskClick.toggle()
-                            taskLabel = "TASK \(i)"
+                            taskLabel = taskList[i]
                             totalTime = "\(i)"
                         } label: {
-                            Text("TASK \(i)")
+                            Text(taskList[i])
                                 .foregroundColor(.black)
                         }
                         
@@ -87,6 +80,10 @@ struct MainView: View {
                             Circle()
                                 .frame(width: 20)
                                 .foregroundColor(colors[i])
+                        }
+                        .sheet(isPresented: $isColorPick) {
+                            ColorPaletteView(pickColor: $pickColor)
+                                .presentationDetents([.fraction(0.3)])
                         }
                     }
                     
