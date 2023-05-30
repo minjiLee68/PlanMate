@@ -12,6 +12,7 @@ struct MainView: View {
     @State private var isTaskClick = false
     @State private var isTaskTimeLineEd = false
     @State private var isColorPick = false
+    @State private var isTaskAdd = false
     @State private var colorIndex = 0
     @State private var taskLabel = ""
     @State private var totalTime = ""
@@ -40,6 +41,12 @@ struct MainView: View {
                 isActive: $isTaskTimeLineEd,
                 label: {}
             )
+            
+            NavigationLink(
+                destination: TaskEditView(),
+                isActive: $isTaskAdd,
+                label: {}
+            )
         }
     }
     
@@ -57,57 +64,60 @@ struct MainView: View {
                         .bold()
                         .font(.caption)
                 }
+                .opacity(taskList.isEmpty ? 0 : 1)
             }
             
-            ForEach(0..<taskList.count, id: \.self) { i in
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 0) {
-                        Button {
-                            isTaskClick.toggle()
-                            taskLabel = taskList[i]
-                            totalTime = "\(i)"
-                        } label: {
-                            Text(taskList[i])
-                                .foregroundColor(.black)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            isColorPick.toggle()
-                            colorIndex = i
-                        } label: {
-                            Circle()
-                                .frame(width: 20)
-                                .foregroundColor(colors[i])
-                        }
-                        .sheet(isPresented: $isColorPick) {
-                            ColorPaletteView(pickColor: $pickColor)
-                                .presentationDetents([.fraction(0.3)])
-                        }
-                    }
-                    
-                    Divider()
-                }
-                .onChange(of: pickColor) { newValue in
-                    isColorPick = false
-                    colors[colorIndex] = EnumColor.colorPick(color: pickColor)
-                }
-            }
+            notTaskList
+            
+//            ForEach(0..<taskList.count, id: \.self) { i in
+//                VStack(alignment: .leading, spacing: 12) {
+//                    HStack(spacing: 0) {
+//                        Button {
+//                            isTaskClick.toggle()
+//                            taskLabel = taskList[i]
+//                            totalTime = "\(i)"
+//                        } label: {
+//                            Text(taskList[i])
+//                                .foregroundColor(.black)
+//                        }
+//
+//                        Spacer()
+//
+//                        Button {
+//                            isColorPick.toggle()
+//                            colorIndex = i
+//                        } label: {
+//                            Circle()
+//                                .frame(width: 20)
+//                                .foregroundColor(colors[i])
+//                        }
+//                        .sheet(isPresented: $isColorPick) {
+//                            ColorPaletteView(pickColor: $pickColor)
+//                                .presentationDetents([.fraction(0.3)])
+//                        }
+//                    }
+//
+//                    Divider()
+//                }
+//                .onChange(of: pickColor) { newValue in
+//                    isColorPick = false
+//                    colors[colorIndex] = EnumColor.colorPick(color: pickColor)
+//                }
+//            }
         }
         .padding(.top, 50)
     }
     
     // history
     var historyView: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 12) {
             subTitle(title: "HISTORY")
             
             VStack(spacing: 15) {
                 historyContentText(taskName: taskLabel, time: totalTime)
             }
         }
-        .padding(.top, 20)
+        .padding(.top, 25)
     }
     
     // Date (YYYY.MM.dd)
@@ -119,7 +129,7 @@ struct MainView: View {
                     .font(.title)
                     .bold()
                 
-                Text("YYYY.MM.dd")
+                Text(ShareVar.dateFormatter.string(from: Date()))
                     .foregroundColor(.black)
                     .font(.callout)
             }
@@ -137,6 +147,20 @@ struct MainView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+    
+    // Task가 없을 때 보여주는 뷰
+    var notTaskList: some View {
+        Button {
+            isTaskAdd.toggle()
+        } label: {
+            HStack {
+                Text("추가하기")
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+            }
+            .padding()
+        }
+    }
 }
 
 extension MainView {
@@ -146,6 +170,7 @@ extension MainView {
         HStack {
             Text(title)
                 .foregroundColor(.gray)
+                .font(.title3)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.bottom, 5)
@@ -158,7 +183,7 @@ extension MainView {
         let totalTime = ["총 소요 시간", "시작 시간", "작업이 마쳐진 시간", "작업이 활발한 시간"]
         
         Text(taskLabel)
-            .bold()
+            .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
         
         ForEach(totalTime.indices, id: \.self) { index in

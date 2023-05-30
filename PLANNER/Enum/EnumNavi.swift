@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-enum EnumNavi: String {
-    case dismiss = "Back"
+enum EnumNavi {
+    case back
+    case save
 }
+
 
 enum EnumColor: String {
     case red = "red"

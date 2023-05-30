@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NavigationBarView: View {
+    var delegate: TaskEditDelegate?
     @Environment(\.dismiss) private var dismiss
     let naviTitle: String
     let enumNavi: EnumNavi?
@@ -18,7 +19,7 @@ struct NavigationBarView: View {
             
             HStack(spacing: 0) {
                 switch enumNavi {
-                case .dismiss:
+                case .back:
                     Button {
                         dismiss()
                     } label: {
@@ -26,24 +27,47 @@ struct NavigationBarView: View {
                             .foregroundColor(.black.opacity(0.6))
                             .bold()
                     }
+                    
+                    Text(naviTitle)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                case .save:
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Back")
+                            .foregroundColor(.black.opacity(0.6))
+                            .bold()
+                    }
+                    
+                    Text(naviTitle)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    Button {
+                        delegate?.didSaveTask()
+                    } label: {
+                        Text("Save")
+                            .foregroundColor(.black.opacity(0.6))
+                            .bold()
+                    }
+
                 default:
                     Text("")
                 }
                 
                 Spacer()
             }
-            .padding(.horizontal, 20)
-            
-            Text(naviTitle)
-                .font(.title3)
-                .bold()
-                .frame(maxWidth: .infinity, alignment: .center)
         }
+        .frame(height: 44)
     }
 }
 
 struct NavigationBarView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationBarView(naviTitle: "TASK TEST", enumNavi: .dismiss)
+        NavigationBarView(naviTitle: "TASK TEST", enumNavi: .back)
     }
 }
