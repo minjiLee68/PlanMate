@@ -26,10 +26,17 @@ struct TaskEditView: View {
                     Divider()
                 }
                 
-                Text("추가하기 \(test)")
+                Text("추가하기")
                     .font(.subheadline)
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.top, 20)
+                
+                ForEach(taskEditViewModel.setTaskList.indices, id: \.self) { index in
+                    Text(taskEditViewModel.setTaskList[index].task)
+                        .font(.subheadline)
+                        .foregroundColor(.black.opacity(0.6))
+                        .padding(.top, 20)
+                }
             }
             
             Spacer()
@@ -37,6 +44,9 @@ struct TaskEditView: View {
         .padding(.horizontal)
         .navigationBarBackButtonHidden()
         .onChange(of: taskEditViewModel.isTaskAdd) { newValue in
+            taskList.forEach { task in
+                taskEditViewModel.setTaskList.append(Task(task: task))
+            }
             test = "ok"
         }
     }

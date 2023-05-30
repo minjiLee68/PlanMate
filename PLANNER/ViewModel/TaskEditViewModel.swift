@@ -9,6 +9,7 @@ import SwiftUI
 
 class TaskEditViewModel: ObservableObject, TaskEditDelegate {
     @Published var setTaskList = [Task]()
+    @Published var task = ""
     @Published var isTaskAdd = false
     
     func didSaveTask() {
