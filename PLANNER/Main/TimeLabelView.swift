@@ -25,7 +25,9 @@ struct TimeLabelView: View {
             
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
-                    NavigationBarView(naviTitle: selectTask, enumNavi: .back)
+                    NavigationBarView(
+                        naviTitle: selectTask,
+                        enumNavi: .back)
                     
                     Picker("selectTask", selection: $selectTask) {
                         ForEach(selectTasks, id: \.self) {
@@ -137,6 +139,6 @@ struct ButtonStateView {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(selectTask: "", selectTasks: ["test"], colorList: [.white, .black])
+        TimeLabelView(selectTask: "", selectTasks: [""], colorList: [.white, .black])
     }
 }

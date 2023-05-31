@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var taskList = ["TASK 1", "TASK 2", "TASK 3"]
+    @StateObject var homeViewModel = MainHomeViewModel()
     @State private var isTaskClick = false
     @State private var isTaskTimeLineEd = false
     @State private var isColorPick = false
@@ -33,11 +33,15 @@ struct MainView: View {
             }
             .padding(.horizontal, 30)
             .onAppear {
-                taskLabel = "TASK 0"
+                homeViewModel.getTaskList()
             }
             
             NavigationLink(
-                destination: TimeLabelView(selectTask: taskList.first ?? "", selectTasks: taskList, colorList: colors),
+                destination: TimeLabelView(
+                    selectTask: taskLabel,
+                    selectTasks: homeViewModel.taskList,
+                    colorList: colors
+                ),
                 isActive: $isTaskTimeLineEd,
                 label: {}
             )
@@ -54,9 +58,15 @@ struct MainView: View {
     var taskView: some View {
         VStack(spacing: 12) {
             HStack(spacing: 0) {
-                subTitle(title: "TASK")
+                subTitle(title: "TASK \(homeViewModel.taskList.count)")
                 
                 Button {
+                    if let firstTask = homeViewModel.taskList.first {
+                        taskLabel = String(describing: firstTask)
+                    } else {
+                        taskLabel = ""
+                    }
+
                     isTaskTimeLineEd.toggle()
                 } label: {
                     Text("편집")
@@ -64,46 +74,46 @@ struct MainView: View {
                         .bold()
                         .font(.caption)
                 }
-                .opacity(taskList.isEmpty ? 0 : 1)
+                .opacity(homeViewModel.taskList.isEmpty ? 0 : 1)
             }
             
             notTaskList
             
-//            ForEach(0..<taskList.count, id: \.self) { i in
-//                VStack(alignment: .leading, spacing: 12) {
-//                    HStack(spacing: 0) {
-//                        Button {
-//                            isTaskClick.toggle()
-//                            taskLabel = taskList[i]
-//                            totalTime = "\(i)"
-//                        } label: {
-//                            Text(taskList[i])
-//                                .foregroundColor(.black)
-//                        }
-//
-//                        Spacer()
-//
-//                        Button {
-//                            isColorPick.toggle()
-//                            colorIndex = i
-//                        } label: {
-//                            Circle()
-//                                .frame(width: 20)
-//                                .foregroundColor(colors[i])
-//                        }
-//                        .sheet(isPresented: $isColorPick) {
-//                            ColorPaletteView(pickColor: $pickColor)
-//                                .presentationDetents([.fraction(0.3)])
-//                        }
-//                    }
-//
-//                    Divider()
-//                }
-//                .onChange(of: pickColor) { newValue in
-//                    isColorPick = false
-//                    colors[colorIndex] = EnumColor.colorPick(color: pickColor)
-//                }
-//            }
+            ForEach(homeViewModel.taskList.indices, id: \.self) { i in
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack(spacing: 0) {
+                        Button {
+                            isTaskClick.toggle()
+                            taskLabel = homeViewModel.taskList[i]
+                            totalTime = "\(i)"
+                        } label: {
+                            Text(homeViewModel.taskList[i])
+                                .foregroundColor(.black)
+                        }
+
+                        Spacer()
+
+                        Button {
+                            isColorPick.toggle()
+                            colorIndex = i
+                        } label: {
+                            Circle()
+                                .frame(width: 20)
+                                .foregroundColor(colors[i])
+                        }
+                        .sheet(isPresented: $isColorPick) {
+                            ColorPaletteView(pickColor: $pickColor)
+                                .presentationDetents([.fraction(0.3)])
+                        }
+                    }
+
+                    Divider()
+                }
+                .onChange(of: pickColor) { newValue in
+                    isColorPick = false
+                    colors[colorIndex] = EnumColor.colorPick(color: pickColor)
+                }
+            }
         }
         .padding(.top, 50)
     }
@@ -136,13 +146,13 @@ struct MainView: View {
             
             Spacer()
             
-            Button {
-                //
-            } label: {
-                RoundedRectangle(cornerRadius: 100)
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray.opacity(0.2))
-            }
+//            Button {
+//                //
+//            } label: {
+//                RoundedRectangle(cornerRadius: 100)
+//                    .frame(width: 50, height: 50)
+//                    .foregroundColor(.gray.opacity(0.2))
+//            }
 
         }
         .frame(maxWidth: .infinity, alignment: .leading)

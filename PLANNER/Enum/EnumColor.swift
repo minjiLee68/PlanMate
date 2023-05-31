@@ -1,17 +1,11 @@
 //
-//  EnumNavi.swift
+//  EnumColor.swift
 //  PLANNER
 //
-//  Created by 이민지 on 2023/05/15.
+//  Created by 이민지 on 2023/05/31.
 //
 
 import SwiftUI
-
-enum EnumNavi {
-    case back
-    case save
-}
-
 
 enum EnumColor: String {
     case red = "red"

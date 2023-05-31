@@ -14,9 +14,16 @@ struct TaskEditView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 30) {
-            NavigationBarView(delegate: taskEditViewModel.self, naviTitle: "", enumNavi: .save)
+            NavigationBarView (
+                isSaveButton: {
+                    test = "aaaaa"
+                    taskEditViewModel.setTask(tasks: taskList)
+                },
+                naviTitle: "",
+                enumNavi: .save
+            )
 
-            Text("Task를 추가해보세요.")
+            Text("Task를 추가해보세요.\(test)")
                 .font(.headline)
             
             VStack(spacing: 10) {
@@ -26,29 +33,16 @@ struct TaskEditView: View {
                     Divider()
                 }
                 
-                Text("추가하기")
+                Text("추가하기 \(test)")
                     .font(.subheadline)
                     .foregroundColor(.black.opacity(0.6))
                     .padding(.top, 20)
-                
-                ForEach(taskEditViewModel.setTaskList.indices, id: \.self) { index in
-                    Text(taskEditViewModel.setTaskList[index].task)
-                        .font(.subheadline)
-                        .foregroundColor(.black.opacity(0.6))
-                        .padding(.top, 20)
-                }
             }
             
             Spacer()
         }
         .padding(.horizontal)
         .navigationBarBackButtonHidden()
-        .onChange(of: taskEditViewModel.isTaskAdd) { newValue in
-            taskList.forEach { task in
-                taskEditViewModel.setTaskList.append(Task(task: task))
-            }
-            test = "ok"
-        }
     }
 }
 

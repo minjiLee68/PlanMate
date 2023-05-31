@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct NavigationBarView: View {
-    var delegate: TaskEditDelegate?
     @Environment(\.dismiss) private var dismiss
+    var isSaveButton:(() -> Void) = {}
     let naviTitle: String
     let enumNavi: EnumNavi?
     
@@ -48,7 +48,7 @@ struct NavigationBarView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                     
                     Button {
-                        delegate?.didSaveTask()
+                        isSaveButton()
                     } label: {
                         Text("Save")
                             .foregroundColor(.black.opacity(0.6))
@@ -68,6 +68,6 @@ struct NavigationBarView: View {
 
 struct NavigationBarView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationBarView(naviTitle: "TASK TEST", enumNavi: .back)
+        NavigationBarView(isSaveButton: {}, naviTitle: "TASK TEST", enumNavi: .back)
     }
 }
