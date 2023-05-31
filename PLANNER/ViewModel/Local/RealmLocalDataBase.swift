@@ -8,9 +8,8 @@
 import SwiftUI
 import RealmSwift
 
-class RealmLocalDataBase<T: Object>: ObservableObject {
+class RealmLocalDataBase<T: Object> {
     private var realm = try! Realm()
-    @Published var data: Results<T>?
     
     // 데이터 추가
     func addData(_ object: T) {
@@ -20,20 +19,30 @@ class RealmLocalDataBase<T: Object>: ObservableObject {
     }
     
     // 데이터 조회
-    func getData() -> T? {
+    func getData() -> Results<T> {
         let results = realm.objects(T.self)
-        if let firstObject = results.first {
-            return firstObject
-        } else {
-            return nil
+        print("realm data \(Realm.Configuration.defaultConfiguration.fileURL!)")
+        return results
+    }
+    
+    // 데이터 필터링해서 가져오기
+    func getFilteringData(type: String, filter: String, completion: @escaping(T) -> ()) {
+        let results = realm.objects(T.self)
+        let filter = NSPredicate(format: "\(type) == %@", filter)
+        if let filtering = results.filter(filter).first {
+            try! realm.write({
+                completion(filtering)
+            })
         }
     }
     
     // 데이터 수정
-    func updateData(_ object: T, withProperties properties: [String: Any]) {
-        try! realm.write {
-            for (key, value) in properties {
-                object[key] = value
+    func updateData(filterName: String, filter: String, completion: @escaping (T) -> ()) {
+        let filter = NSPredicate(format: "\(filterName) == %@", filter)
+
+        if let taskToUpdate = realm.objects(T.self).filter(filter).first {
+            try! realm.write {
+                completion(taskToUpdate)
             }
         }
     }
@@ -44,5 +53,25 @@ class RealmLocalDataBase<T: Object>: ObservableObject {
         try! realm.write {
             realm.delete(objects)
         }
+    }
+}
+
+struct RealmDelegate<T: Object>: RealmDataManagerProtocol {
+    typealias T = T
+    
+    func fetchTasks() {
+        <#code#>
+    }
+    
+    func saveTask(_ object: T) {
+        <#code#>
+    }
+    
+    func updateTask(_ object: T) {
+        <#code#>
+    }
+    
+    func deleteTask(_ object: T) {
+        <#code#>
     }
 }

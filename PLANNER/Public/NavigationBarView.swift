@@ -28,10 +28,7 @@ struct NavigationBarView: View {
                             .bold()
                     }
                     
-                    Text(naviTitle)
-                        .font(.title3)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    Spacer()
                     
                 case .save:
                     Button {
@@ -42,10 +39,7 @@ struct NavigationBarView: View {
                             .bold()
                     }
                     
-                    Text(naviTitle)
-                        .font(.title3)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    Spacer()
                     
                     Button {
                         isSaveButton()
@@ -58,9 +52,12 @@ struct NavigationBarView: View {
                 default:
                     Text("")
                 }
-                
-                Spacer()
             }
+            
+            Text(naviTitle)
+                .font(.title3)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .center)
         }
         .frame(height: 44)
     }

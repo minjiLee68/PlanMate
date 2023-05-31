@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0A7A07CC2A2727F000D4CB2F /* MainHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */; };
 		0A7A07CE2A2728C200D4CB2F /* EnumColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */; };
+		0A7A07D32A2792A500D4CB2F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07D22A2792A500D4CB2F /* HistoryView.swift */; };
+		0A7A07D52A27936700D4CB2F /* SubTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07D42A27936700D4CB2F /* SubTitle.swift */; };
+		0A7A07D72A27D85200D4CB2F /* TimeLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07D62A27D85200D4CB2F /* TimeLabelViewModel.swift */; };
 		0A8D64C72A25CFB900D7D5BD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D64C62A25CFB900D7D5BD /* Task.swift */; };
 		0A8D64CA2A25D25600D7D5BD /* TaskEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D64C92A25D25600D7D5BD /* TaskEditView.swift */; };
 		0A8D64CF2A25DF5400D7D5BD /* DataStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D64CE2A25DF5400D7D5BD /* DataStorageProtocol.swift */; };
@@ -24,7 +27,6 @@
 		0A90CD332A0DF45900F306B8 /* PLANNERUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90CD322A0DF45900F306B8 /* PLANNERUITestsLaunchTests.swift */; };
 		0A90CD412A0DF55B00F306B8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90CD402A0DF55B00F306B8 /* MainView.swift */; };
 		0A90CD432A0E3E1000F306B8 /* TimeLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90CD422A0E3E1000F306B8 /* TimeLabelView.swift */; };
-		0A954D902A1612A000315A23 /* TestColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A954D8F2A1612A000315A23 /* TestColorModel.swift */; };
 		0AEA49272A127E5A001D9099 /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEA49262A127E5A001D9099 /* NavigationBarView.swift */; };
 		0AEA492A2A127F76001D9099 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEA49292A127F76001D9099 /* Enums.swift */; };
 		0AF4A7AC2A1C858C00085DFE /* ColorPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4A7AB2A1C858C00085DFE /* ColorPaletteView.swift */; };
@@ -51,6 +53,9 @@
 /* Begin PBXFileReference section */
 		0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHomeViewModel.swift; sourceTree = "<group>"; };
 		0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumColor.swift; sourceTree = "<group>"; };
+		0A7A07D22A2792A500D4CB2F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		0A7A07D42A27936700D4CB2F /* SubTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTitle.swift; sourceTree = "<group>"; };
+		0A7A07D62A27D85200D4CB2F /* TimeLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabelViewModel.swift; sourceTree = "<group>"; };
 		0A8D64C62A25CFB900D7D5BD /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0A8D64C92A25D25600D7D5BD /* TaskEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditView.swift; sourceTree = "<group>"; };
 		0A8D64CE2A25DF5400D7D5BD /* DataStorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageProtocol.swift; sourceTree = "<group>"; };
@@ -68,7 +73,6 @@
 		0A90CD322A0DF45900F306B8 /* PLANNERUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLANNERUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0A90CD402A0DF55B00F306B8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		0A90CD422A0E3E1000F306B8 /* TimeLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLabelView.swift; sourceTree = "<group>"; };
-		0A954D8F2A1612A000315A23 /* TestColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestColorModel.swift; sourceTree = "<group>"; };
 		0AEA49262A127E5A001D9099 /* NavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarView.swift; sourceTree = "<group>"; };
 		0AEA49292A127F76001D9099 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		0AF4A7AB2A1C858C00085DFE /* ColorPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteView.swift; sourceTree = "<group>"; };
@@ -101,6 +105,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A7A07D12A27929B00D4CB2F /* History */ = {
+			isa = PBXGroup;
+			children = (
+				0A7A07D22A2792A500D4CB2F /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		0A8D64C52A25CFA800D7D5BD /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +143,7 @@
 				0A8D64D62A270B6F00D7D5BD /* Local */,
 				0A8D64D12A25EFDA00D7D5BD /* TaskEditViewModel.swift */,
 				0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */,
+				0A7A07D62A27D85200D4CB2F /* TimeLabelViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -178,7 +191,6 @@
 				0A90CD172A0DF45800F306B8 /* ContentView.swift */,
 				0A90CD192A0DF45900F306B8 /* Assets.xcassets */,
 				0A90CD1B2A0DF45900F306B8 /* Preview Content */,
-				0A954D8F2A1612A000315A23 /* TestColorModel.swift */,
 			);
 			path = PLANNER;
 			sourceTree = "<group>";
@@ -211,6 +223,7 @@
 		0A90CD3F2A0DF54900F306B8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				0A7A07D12A27929B00D4CB2F /* History */,
 				0A8D64C82A25D25000D7D5BD /* Edit */,
 				0A90CD402A0DF55B00F306B8 /* MainView.swift */,
 				0A90CD422A0E3E1000F306B8 /* TimeLabelView.swift */,
@@ -239,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				0AF4A7AB2A1C858C00085DFE /* ColorPaletteView.swift */,
+				0A7A07D42A27936700D4CB2F /* SubTitle.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -388,9 +402,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AF4A7B02A1C8B0A00085DFE /* ShareVar.swift in Sources */,
+				0A7A07D52A27936700D4CB2F /* SubTitle.swift in Sources */,
 				0A8D64D22A25EFDA00D7D5BD /* TaskEditViewModel.swift in Sources */,
-				0A954D902A1612A000315A23 /* TestColorModel.swift in Sources */,
 				0A8D64C72A25CFB900D7D5BD /* Task.swift in Sources */,
+				0A7A07D72A27D85200D4CB2F /* TimeLabelViewModel.swift in Sources */,
 				0A90CD432A0E3E1000F306B8 /* TimeLabelView.swift in Sources */,
 				0A90CD182A0DF45800F306B8 /* ContentView.swift in Sources */,
 				0A8D64CF2A25DF5400D7D5BD /* DataStorageProtocol.swift in Sources */,
@@ -402,6 +417,7 @@
 				0A8D64CA2A25D25600D7D5BD /* TaskEditView.swift in Sources */,
 				0AF4A7AC2A1C858C00085DFE /* ColorPaletteView.swift in Sources */,
 				0A7A07CE2A2728C200D4CB2F /* EnumColor.swift in Sources */,
+				0A7A07D32A2792A500D4CB2F /* HistoryView.swift in Sources */,
 				0AEA49272A127E5A001D9099 /* NavigationBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

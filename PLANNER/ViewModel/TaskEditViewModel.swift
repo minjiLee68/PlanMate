@@ -10,22 +10,19 @@ import SwiftUI
 
 class TaskEditViewModel: ObservableObject {
     @Published var realmLocalDataBase = RealmLocalDataBase<Task>()
-    @Published var setTaskList = [Task]()
-    @Published var task = ""
     
     // task 데이터 추가
-    func setTask(tasks: [String]) {
-        task.forEach { task in
-            realmLocalDataBase.addData(Task(value: task))
-        }
+    func setTask(task: String) {
+        let newTask = Task()
+        newTask.task = task
+        realmLocalDataBase.addData(newTask)
     }
     
-    // task 데이터 조회
-    func getTask() {
-        realmLocalDataBase.getData()
-        if let data = realmLocalDataBase.data {
-            setTaskList.append(contentsOf: data)
-        }
+    // task 데이터 가져오기
+    func getTaskList() -> [Task] {
+        let data = realmLocalDataBase.getData()
+        let taskList = Array(data.map { $0 })
+        return taskList
     }
     
     // task 데이터 수정

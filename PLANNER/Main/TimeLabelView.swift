@@ -10,7 +10,7 @@ import SwiftUI
 struct TimeLabelView: View {
     @State var selectTask: String
     @State var selectTasks: [String]
-    @State var colorList: [Color]
+    @State var selectColors: [Color]
     @State var color: Color = .white
     let timeText = 6..<24
     let timeTextWidth: CGFloat = 40
@@ -59,14 +59,16 @@ struct TimeLabelView: View {
                 }
             }
             .onChange(of: selectTask) { newValue in
-                for task in selectTasks.indices {
-                    if selectTask == selectTasks[task] {
-                        color = colorList[task]
+                for i in selectTasks.indices {
+                    if selectTask == selectTasks[i] {
+                        color = selectColors[i]
                     }
                 }
             }
             .onAppear {
-                color = colorList.first ?? .white
+                if let color = selectColors.first {
+                    self.color = color
+                }
             }
         }
         .padding(.horizontal, 20)
@@ -77,8 +79,8 @@ struct TimeLabelView: View {
 struct ButtonView: View {
     @Binding var selectTask: String
     @Binding var color: Color
-    @State private var boolArray = [false, false, false, false, false]
-    @State private var buttonColorList = [TestColorModel]()
+    @State private var boolArray = [false, false, false, false]
+    @State private var buttonColorList = [Color]()
     @State private var draggedColumnIndex: Int = 0
     let timeCheckButtonCount = 0..<5
     
@@ -91,7 +93,7 @@ struct ButtonView: View {
                 RoundedRectangle(cornerRadius: 0)
                     .fill(boolArray[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
             }
-            .frame(width: 60)
+//            .frame(width: 80)
             .padding(.vertical, 4)
 //            .simultaneousGesture(
 //                DragGesture(minimumDistance: 0)
@@ -111,24 +113,18 @@ struct ButtonView: View {
     }
     
     func testColorData() {
-        if selectTask == "TASK 0"{
-            buttonColorListAppend(color: color)
-        } else if selectTask == "TASK 1" {
-            buttonColorListAppend(color: color)
-        } else {
-            buttonColorListAppend(color: color)
-        }
+        buttonColorListAppend(color: color)
     }
     
     func buttonColorListAppend(color: Color) {
         if buttonColorList.count >= 5 {
             return
         }
-        buttonColorList.append(TestColorModel(color: color))
+        buttonColorList.append(color)
     }
     
     func colors(forIndex index: Int) -> Color {
-        return buttonColorList[index].color
+        return buttonColorList[index]
     }
 }
 
@@ -139,6 +135,6 @@ struct ButtonStateView {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(selectTask: "", selectTasks: [""], colorList: [.white, .black])
+        TimeLabelView(selectTask: "", selectTasks: [""], selectColors: [.white])
     }
 }

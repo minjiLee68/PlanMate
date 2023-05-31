@@ -6,27 +6,26 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 protocol DataStorageProtocol {
     associatedtype E
-    var data: E {get set}
+    var task: E {get set}
 }
 
-// 프로토콜 정의
-//protocol TaskEditDelegate {
-//    func didSaveTask()
-//    func getTaskAddValue() -> Bool
-//}
+// 프로토콜
+protocol RealmDataManagerDelegate: AnyObject {
+    associatedtype T
+    func didFetchTasks(_ object: [T])
+    func didSaveTask()
+    func didUpdateTask()
+    func didDeleteTask()
+}
 
-class TaskSaveDelegateImpl {
-    var isTaskAdd = false
-    
-    func didSaveTask() {
-        isTaskAdd.toggle()
-    }
-    
-    func getTaskAddValue() -> Bool {
-        isTaskAdd.toggle()
-        return isTaskAdd
-    }
+protocol RealmDataManagerProtocol {
+    associatedtype T
+    func fetchTasks()
+    func saveTask(_ object: T)
+    func updateTask(_ object: T)
+    func deleteTask(_ object: T)
 }
