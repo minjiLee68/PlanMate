@@ -9,7 +9,7 @@ import SwiftUI
 
 
 class TaskEditViewModel: ObservableObject {
-    @Published var realmLocalDataBase = RealmLocalDataBase<Task>()
+    var realmLocalDataBase = RealmLocalDataBase<Task>()
     
     // task 데이터 추가
     func setTask(task: String) {
@@ -29,6 +29,6 @@ class TaskEditViewModel: ObservableObject {
 
     // 모든 task 데이터 삭제
     func deleteTask() {
-        realmLocalDataBase.deleteData(Task.self)
+        realmLocalDataBase.deleteData()
     }
 }

@@ -170,13 +170,14 @@ extension MainView {
     
     func colorInit() {
         for i in homeViewModel.taskList.indices {
+            print("---> \(homeViewModel.taskList) \(colors.count)")
             colors.append(EnumColor.colorPick(color: homeViewModel.colorList[i]))
         }
     }
     
     func colorUpdate(index: Int) {
         colors[index] = EnumColor.colorPick(color: pickColor)
-        homeViewModel.colorUpdate(filterName: "task", filter:  homeViewModel.taskList[index], color: pickColor)
+        homeViewModel.colorUpdate(task: homeViewModel.taskList[index], color: pickColor)
     }
 }
 

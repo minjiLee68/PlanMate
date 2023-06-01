@@ -14,18 +14,20 @@ protocol DataStorageProtocol {
 }
 
 // 프로토콜
-protocol RealmDataManagerDelegate: AnyObject {
-    associatedtype T
-    func didFetchTasks(_ object: [T])
-    func didSaveTask()
-    func didUpdateTask()
-    func didDeleteTask()
-}
+//protocol RealmDataManagerDelegate: AnyObject {
+//    associatedtype T
+//    func didFetchTasks(_ object: [T])
+//    func didSaveTask()
+//    func didUpdateTask()
+//    func didDeleteTask()
+//}
 
-protocol RealmDataManagerProtocol {
-    associatedtype T
-    func fetchTasks()
-    func saveTask(_ object: T)
-    func updateTask(_ object: T)
-    func deleteTask(_ object: T)
-}
+//protocol RealmDataManagerDelegate {
+//    associatedtype T
+//    
+//    func getData() -> [T]
+//    func addData(_ object: T)
+//    func getFilteringData(_ filter: NSPredicate) -> [T]
+//    func updateData(_ filter: NSPredicate, _ completion: @escaping (T) -> ())
+//    func deleteData()
+//}

@@ -13,11 +13,12 @@ struct PLANNERApp: SwiftUI.App {
     init() {
         // Realm 마이그레이션 설정
         let config = Realm.Configuration(
-            schemaVersion: 2,
+            schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion < 2 {
+                if oldSchemaVersion < 3 {
                     migration.enumerateObjects(ofType: Task.className()) { oldObject, newObject in
                         newObject?["color"] = "defaultColor" // 예시로 새로운 속성 추가
+                        newObject?["taskTime"] = 0 // 예시로 새로운 속성 추가
                     }
                 }
             }

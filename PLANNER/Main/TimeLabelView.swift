@@ -77,6 +77,8 @@ struct TimeLabelView: View {
 }
 
 struct ButtonView: View {
+    @StateObject var timeLabelViewModel = TimeLabelViewModel()
+    
     @Binding var selectTask: String
     @Binding var color: Color
     @State private var boolArray = [false, false, false, false]
@@ -125,6 +127,10 @@ struct ButtonView: View {
     
     func colors(forIndex index: Int) -> Color {
         return buttonColorList[index]
+    }
+    
+    func timeLabelCheck() {
+        timeLabelViewModel.timeLabel += 1
     }
 }
 

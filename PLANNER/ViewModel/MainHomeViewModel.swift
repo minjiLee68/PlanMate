@@ -17,14 +17,14 @@ class MainHomeViewModel: ObservableObject {
     func getTaskList() {
         let data = realmLocalDataBase.getData()
         let tasks = Array(data.map { $0.task })
-        let colors = Array(data.map {$0.color})
+        let colors = Array(data.map { $0.color })
         taskList = tasks
         colorList = colors
     }
     
     // color update
-    func colorUpdate(filterName: String, filter: String, color: String) {
-        realmLocalDataBase.updateData(filterName: filterName, filter: filter) { task in
+    func colorUpdate(task: String, color: String) {
+        realmLocalDataBase.updateData(NSPredicate(format: "task == %@", task)) { task in
             task.color = color
         }
     }
