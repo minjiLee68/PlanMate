@@ -30,8 +30,16 @@ struct TimeLabelView: View {
                         enumNavi: .back)
                     
                     Picker("selectTask", selection: $selectTask) {
-                        ForEach(selectTasks, id: \.self) {
-                            Text($0)
+                        ForEach(selectTasks, id: \.self) { task in
+                            HStack(spacing: 0) {
+                                Text(task)
+                                
+                                Spacer()
+                                
+                                Circle()
+                                    .frame(width: 20)
+                                    .foregroundColor(color)
+                            }
                         }
                     }
                     .pickerStyle(.automatic)
@@ -91,6 +99,7 @@ struct ButtonView: View {
             Button {
                 boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
                 testColorData() // 색상 업데이트
+                timeLabelCheck(index: index)
             } label: {
                 RoundedRectangle(cornerRadius: 0)
                     .fill(boolArray[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
@@ -129,13 +138,14 @@ struct ButtonView: View {
         return buttonColorList[index]
     }
     
-    func timeLabelCheck() {
-        timeLabelViewModel.timeLabel += 1
+    func timeLabelCheck(index: Int) {
+        if boolArray[index] == true {
+            timeLabelViewModel.timeLabel += 1
+        } else {
+            timeLabelViewModel.timeLabel -= 1
+        }
+        timeLabelViewModel.updateData(selectTask)
     }
-}
-
-struct ButtonStateView {
-    var isToggled: Bool = false
 }
 
 
