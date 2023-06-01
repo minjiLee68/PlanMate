@@ -86,7 +86,6 @@ struct TimeLabelView: View {
 
 struct ButtonView: View {
     @StateObject var timeLabelViewModel = TimeLabelViewModel()
-    
     @Binding var selectTask: String
     @Binding var color: Color
     @State private var boolArray = [false, false, false, false]
@@ -106,6 +105,9 @@ struct ButtonView: View {
             }
 //            .frame(width: 80)
             .padding(.vertical, 4)
+            .onAppear {
+//                getTimeLabelColor()
+            }
 //            .simultaneousGesture(
 //                DragGesture(minimumDistance: 0)
 //                    .onChanged { value in
@@ -128,7 +130,7 @@ struct ButtonView: View {
     }
     
     func buttonColorListAppend(color: Color) {
-        if buttonColorList.count >= 5 {
+        if buttonColorList.count >= 4 {
             return
         }
         buttonColorList.append(color)
@@ -145,6 +147,14 @@ struct ButtonView: View {
             timeLabelViewModel.timeLabel -= 1
         }
         timeLabelViewModel.updateData(selectTask)
+    }
+    
+    func getTimeLabelColor() {
+        let tasks = timeLabelViewModel.getTaskList(selectTask)
+        for i in tasks.indices {
+            let color = EnumColor.colorPick(color: tasks[i].color)
+            buttonColorList.append(color)
+        }
     }
 }
 

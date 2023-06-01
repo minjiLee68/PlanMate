@@ -25,9 +25,9 @@ struct RealmLocalDataBase<T: Object> {
     }
     
     // 데이터 필터링해서 가져오기
-    func getFilteringData(_ filter: NSPredicate) -> T {
+    func getFilteringData(_ filter: NSPredicate) -> Results<T> {
         let results = realm.objects(T.self)
-        return results.filter(filter).first ?? T()
+        return results.filter(filter)
     }
     
     // 데이터 업데이트

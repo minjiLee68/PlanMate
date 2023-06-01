@@ -13,5 +13,10 @@ class Task: Object, DataStorageProtocol {
     typealias E = String
     @Persisted var task: E
     @Persisted var color: String = "gray"
-    @Persisted var taskTime: Int = 0
+    @Persisted var taskTime: RealmSwift.List<Time> = RealmSwift.List<Time>()
+}
+
+class Time: Object {
+    @Persisted var hour: Int
+    @Persisted var time: Int
 }
