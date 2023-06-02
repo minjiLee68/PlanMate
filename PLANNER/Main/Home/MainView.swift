@@ -16,10 +16,15 @@ struct MainView: View {
     @State private var isTaskAdd = false
     @State private var isSave = false
     
+    @State private var showDeleteAlert = false
+    @State private var dragMode: Bool = false
+    
     @State private var colorIndex = 0
     @State private var taskLabel = ""
     @State private var totalTime = ""
     @State var pickColor = ""
+    
+    @State private var offset = CGSize.zero
 
     var body: some View {
         if #available(iOS 16.0, *) {
@@ -72,44 +77,9 @@ struct MainView: View {
             
             ForEach(homeViewModel.taskList.indices, id: \.self) { i in
                 VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 0) {
-                        Button {
-                            isTaskClick.toggle()
-                            taskLabel = homeViewModel.taskList[i]
-                            totalTime = "\(i)"
-                        } label: {
-                            Text(homeViewModel.taskList[i])
-                                .foregroundColor(.black)
-                        }
-
-                        Spacer()
-
-                        Button {
-                            isColorPick.toggle()
-                            colorIndex = i
-                        } label: {
-                            Circle()
-                                .frame(width: 20)
-                                .foregroundColor(homeViewModel.colors[i])
-                        }
-                        .sheet(isPresented: $isColorPick) {
-                            if #available(iOS 16.0, *) {
-                                ColorPaletteView(pickColor: $pickColor)
-                                    .presentationDetents([.fraction(0.3)])
-                            } else {
-                                // Fallback on earlier versions
-                                ZStack {
-                                    ColorPaletteView(pickColor: $pickColor)
-                                    Color.black.opacity(0.7)
-                                        .edgesIgnoringSafeArea(.all)
-                                        .onTapGesture {
-                                            isColorPick = false
-                                        }
-                                }
-                            }
-                        }
-                    }
-
+                    
+                    taskList(index: i)
+                    
                     Divider()
                 }
                 .onChange(of: pickColor) { newValue in
@@ -122,6 +92,54 @@ struct MainView: View {
         }
         .padding(.top, 50)
     }
+    
+    @ViewBuilder
+    func taskList(index: Int) -> some View {
+        ZStack {
+            gestureMode()
+            
+            HStack(spacing: 0) {
+                Button {
+                    isTaskClick.toggle()
+                    taskLabel = homeViewModel.taskList[index]
+                    totalTime = "\(index)"
+                } label: {
+                    Text(homeViewModel.taskList[index])
+                        .foregroundColor(.black)
+                }
+
+                Spacer()
+
+                Button {
+                    isColorPick.toggle()
+                    colorIndex = index
+                } label: {
+                    Circle()
+                        .frame(width: 20)
+                        .foregroundColor(homeViewModel.colors[index])
+                }
+                .sheet(isPresented: $isColorPick) {
+                    if #available(iOS 16.0, *) {
+                        ColorPaletteView(pickColor: $pickColor)
+                            .presentationDetents([.fraction(0.3)])
+                    } else {
+                        // Fallback on earlier versions
+                        ZStack {
+                            ColorPaletteView(pickColor: $pickColor)
+                            Color.black.opacity(0.7)
+                                .edgesIgnoringSafeArea(.all)
+                                .onTapGesture {
+                                    isColorPick = false
+                                }
+                        }
+                    }
+                }
+            }
+            .background(Color.white)
+        .modifier(DraggableModifier(direction: .horizontal, showDeleteAlert: $showDeleteAlert, dragMode: $dragMode))
+        }
+    }
+    
     
     // Date (YYYY.MM.dd)
     var dateView: some View {
@@ -176,6 +194,24 @@ extension MainView {
                 .padding()
             }
         )
+    }
+    
+    @ViewBuilder
+    func gestureMode() -> some View {
+        GeometryReader { geo in
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    showDeleteAlert.toggle()
+                    
+                }, label: {
+                    Text("삭제")
+                })
+                .frame(width: 60)
+            }
+            .frame(height: geo.size.height)
+        }
     }
     
     func getTasks() {

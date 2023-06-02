@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A5B8A692A29D4FA0019CC77 /* DraggableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8A682A29D4FA0019CC77 /* DraggableModifier.swift */; };
 		0A7A07CC2A2727F000D4CB2F /* MainHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */; };
 		0A7A07CE2A2728C200D4CB2F /* EnumColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */; };
 		0A7A07D32A2792A500D4CB2F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07D22A2792A500D4CB2F /* HistoryView.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A5B8A682A29D4FA0019CC77 /* DraggableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableModifier.swift; sourceTree = "<group>"; };
 		0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHomeViewModel.swift; sourceTree = "<group>"; };
 		0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumColor.swift; sourceTree = "<group>"; };
 		0A7A07D22A2792A500D4CB2F /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A5B8A642A29D4CD0019CC77 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0A90CD402A0DF55B00F306B8 /* MainView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		0A5B8A672A29D4ED0019CC77 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				0A5B8A682A29D4FA0019CC77 /* DraggableModifier.swift */,
+			);
+			path = Modifier;
+			sourceTree = "<group>";
+		};
 		0A7A07D12A27929B00D4CB2F /* History */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,9 +241,9 @@
 		0A90CD3F2A0DF54900F306B8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				0A5B8A642A29D4CD0019CC77 /* Home */,
 				0A7A07D12A27929B00D4CB2F /* History */,
 				0A8D64C82A25D25000D7D5BD /* Edit */,
-				0A90CD402A0DF55B00F306B8 /* MainView.swift */,
 				0A90CD422A0E3E1000F306B8 /* TimeLabelView.swift */,
 			);
 			path = Main;
@@ -251,6 +269,7 @@
 		0AF4A7AA2A1C857E00085DFE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0A5B8A672A29D4ED0019CC77 /* Modifier */,
 				0AF4A7AB2A1C858C00085DFE /* ColorPaletteView.swift */,
 				0A7A07D42A27936700D4CB2F /* SubTitle.swift */,
 			);
@@ -411,6 +430,7 @@
 				0A8D64CF2A25DF5400D7D5BD /* DataStorageProtocol.swift in Sources */,
 				0AEA492A2A127F76001D9099 /* Enums.swift in Sources */,
 				0A90CD412A0DF55B00F306B8 /* MainView.swift in Sources */,
+				0A5B8A692A29D4FA0019CC77 /* DraggableModifier.swift in Sources */,
 				0A90CD162A0DF45800F306B8 /* PLANNERApp.swift in Sources */,
 				0A7A07CC2A2727F000D4CB2F /* MainHomeViewModel.swift in Sources */,
 				0A8D64D82A270B8800D7D5BD /* RealmLocalDataBase.swift in Sources */,
