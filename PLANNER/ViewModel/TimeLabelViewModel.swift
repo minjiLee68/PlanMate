@@ -14,12 +14,23 @@ class TimeLabelViewModel: ObservableObject {
     @Published var timeLabel: Int = 0
     
     // 데이터 업데이트
-    func updateData(_ task: String) {
+    func setTime(_ task: String) {
+        let time = Time()
+        time.hour = self.timeHour
+        time.time = self.timeLabel
+        let filter = NSPredicate(format: "task == %@", task)
+        
+        realmLocalDataBase.updateData(filter) { task in
+            task.taskTime.append(time)
+        }
+    }
+    
+    func timeUpdate(_ task: String) {
         let filter = NSPredicate(format: "task == %@", task)
         realmLocalDataBase.updateData(filter) { task in
-            task.taskTime.forEach { time in
-                if time.hour == self.timeHour {
-                    time.time = self.timeLabel
+            task.taskTime.forEach { t in
+                if t.time > self.timeLabel {
+                    t.time = self.timeLabel
                 }
             }
         }

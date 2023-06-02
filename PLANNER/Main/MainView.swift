@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var homeViewModel = MainHomeViewModel()
-    @State private var colors = [Color]()
     
     @State private var isTaskClick = false
     @State private var isTaskTimeLineEd = false
@@ -23,23 +22,37 @@ struct MainView: View {
     @State var pickColor = ""
 
     var body: some View {
-        NavigationStack {
-            self.navigationLink()
-            
-            VStack(spacing: 0) {
-                dateView
-                
-                ScrollView(showsIndicators: false) {
-                    taskView
-                    
-                    HistoryView(taskLabel: $taskLabel, totalTime: $totalTime)
-                }
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                mainView
             }
-            .padding(.horizontal, 30)
+        } else {
+            // Fallback on earlier versions
+            NavigationView {
+                mainView
+            }
         }
+    }
+    
+    // main view
+    var mainView: some View {
+        VStack(spacing: 0) {
+            dateView
+            
+            ScrollView(showsIndicators: false) {
+                taskView
+                
+                HistoryView(taskLabel: $taskLabel, totalTime: $totalTime)
+            }
+        }
+        .padding(.horizontal, 30)
         .onAppear {
             getTasks()
-            colorInit()
+            if let firstTask = homeViewModel.taskList.first {
+                taskLabel = String(describing: firstTask)
+            } else {
+                taskLabel = ""
+            }
         }
         .onChange(of: isSave) { newValue in
             if newValue {
@@ -54,22 +67,7 @@ struct MainView: View {
             HStack(spacing: 0) {
                 SubTitle(title: "TASK")
                 
-                Button {
-                    if let firstTask = homeViewModel.taskList.first {
-                        taskLabel = String(describing: firstTask)
-                    } else {
-                        taskLabel = ""
-                    }
-
-                    isTaskTimeLineEd.toggle()
-                    
-                } label: {
-                    Text("편집")
-                        .foregroundColor(.black)
-                        .bold()
-                        .font(.caption)
-                }
-                .opacity(homeViewModel.taskList.isEmpty ? 0 : 1)
+                editButtonLink() // 편집 버튼
             }
             
             ForEach(homeViewModel.taskList.indices, id: \.self) { i in
@@ -92,11 +90,23 @@ struct MainView: View {
                         } label: {
                             Circle()
                                 .frame(width: 20)
-                                .foregroundColor(colors[i])
+                                .foregroundColor(homeViewModel.colors[i])
                         }
                         .sheet(isPresented: $isColorPick) {
-                            ColorPaletteView(pickColor: $pickColor)
-                                .presentationDetents([.fraction(0.3)])
+                            if #available(iOS 16.0, *) {
+                                ColorPaletteView(pickColor: $pickColor)
+                                    .presentationDetents([.fraction(0.3)])
+                            } else {
+                                // Fallback on earlier versions
+                                ZStack {
+                                    ColorPaletteView(pickColor: $pickColor)
+                                    Color.black.opacity(0.7)
+                                        .edgesIgnoringSafeArea(.all)
+                                        .onTapGesture {
+                                            isColorPick = false
+                                        }
+                                }
+                            }
                         }
                     }
 
@@ -108,16 +118,7 @@ struct MainView: View {
                 }
             }
             
-            Button {
-                isTaskAdd.toggle()
-            } label: {
-                HStack {
-                    Text("추가하기")
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
-                .padding()
-            }
+            addButtonLink() // 추가하기 버튼
         }
         .padding(.top, 50)
     }
@@ -140,27 +141,40 @@ struct MainView: View {
 
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 10)
     }
 }
 
 extension MainView {
     // Navigation Link
     @ViewBuilder
-    func navigationLink() -> some View {
+    func editButtonLink() -> some View {
         NavigationLink(
             destination: TimeLabelView(
                 selectTask: taskLabel,
                 selectTasks: homeViewModel.taskList,
-                selectColors: colors
-            ),
-            isActive: $isTaskTimeLineEd,
-            label: {}
+                selectColors: homeViewModel.colors
+            ),label: {
+                Text("편집")
+                    .foregroundColor(.black)
+                    .bold()
+                    .font(.caption)
+                    .opacity(homeViewModel.taskList.isEmpty ? 0 : 1)
+            }
         )
-        
+    }
+    
+    @ViewBuilder
+    func addButtonLink() -> some View {
         NavigationLink(
-            destination: TaskEditView(isSave: $isSave),
-            isActive: $isTaskAdd,
-            label: {}
+            destination: TaskEditView(isSave: $isSave), label: {
+                HStack {
+                    Text("추가하기")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                }
+                .padding()
+            }
         )
     }
     
@@ -168,15 +182,8 @@ extension MainView {
         homeViewModel.getTaskList()
     }
     
-    func colorInit() {
-        for i in homeViewModel.taskList.indices {
-            print("---> \(homeViewModel.taskList) \(colors.count)")
-            colors.append(EnumColor.colorPick(color: homeViewModel.colorList[i]))
-        }
-    }
-    
     func colorUpdate(index: Int) {
-        colors[index] = EnumColor.colorPick(color: pickColor)
+        homeViewModel.colors[index] = EnumColor.colorPick(color: pickColor)
         homeViewModel.colorUpdate(task: homeViewModel.taskList[index], color: pickColor)
     }
 }

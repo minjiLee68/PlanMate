@@ -17,11 +17,11 @@ struct TimeLabelView: View {
     
     var body: some View {
         ZStack {
-            HStack {
-                Divider()
-            }
-            .padding(.leading, timeTextWidth)
-            .frame(maxWidth: .infinity, alignment: .leading)
+//            HStack {
+//                Divider()
+//            }
+//            .padding(.leading, timeTextWidth)
+//            .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
@@ -48,7 +48,6 @@ struct TimeLabelView: View {
                     .cornerRadius(5)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-                .background(Color.white)
                 
                 ForEach(timeText, id: \.self) { i in
                     VStack(spacing: 0) {
@@ -58,7 +57,7 @@ struct TimeLabelView: View {
                                 .padding(.horizontal, 5)
                                 .frame(width: timeTextWidth)
                             
-                            ButtonView(selectTask: $selectTask, color: $color)
+                            ButtonView(selectTask: $selectTask, color: $color, timeHour: timeText[i])
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -88,6 +87,7 @@ struct ButtonView: View {
     @StateObject var timeLabelViewModel = TimeLabelViewModel()
     @Binding var selectTask: String
     @Binding var color: Color
+    @State var timeHour: Int
     @State private var boolArray = [false, false, false, false]
     @State private var buttonColorList = [Color]()
     @State private var draggedColumnIndex: Int = 0
@@ -143,10 +143,13 @@ struct ButtonView: View {
     func timeLabelCheck(index: Int) {
         if boolArray[index] == true {
             timeLabelViewModel.timeLabel += 1
+            timeLabelViewModel.timeHour = timeHour
+            timeLabelViewModel.setTime(selectTask)
         } else {
             timeLabelViewModel.timeLabel -= 1
+            timeLabelViewModel.timeHour = timeHour
+            timeLabelViewModel.timeUpdate(selectTask)
         }
-        timeLabelViewModel.updateData(selectTask)
     }
     
     func getTimeLabelColor() {

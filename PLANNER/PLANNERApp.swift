@@ -13,12 +13,12 @@ struct PLANNERApp: SwiftUI.App {
     init() {
         // Realm 마이그레이션 설정
         let config = Realm.Configuration(
-            schemaVersion: 3,
+            schemaVersion: 4,
             migrationBlock: { migration, oldSchemaVersion in
-                if oldSchemaVersion < 3 {
+                if oldSchemaVersion < 4 {
                     migration.enumerateObjects(ofType: Task.className()) { oldObject, newObject in
                         newObject?["color"] = "defaultColor" // 예시로 새로운 속성 추가
-                        newObject?["taskTime"] = 0 // 예시로 새로운 속성 추가
+                        newObject?["taskTime"] = [Time]() // 예시로 새로운 속성 추가
                     }
                 }
             }
@@ -26,6 +26,11 @@ struct PLANNERApp: SwiftUI.App {
         
         // Realm 구성 설정
         Realm.Configuration.defaultConfiguration = config
+        
+        // Dark 모드 비활성화
+        if #available(iOS 15.0, *) {
+            UITraitCollection.current = UITraitCollection(userInterfaceStyle: .light)
+        }
     }
     
     var body: some Scene {

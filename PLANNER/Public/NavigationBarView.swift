@@ -15,8 +15,6 @@ struct NavigationBarView: View {
     
     var body: some View {
         ZStack {
-            Color.white
-            
             HStack(spacing: 0) {
                 switch enumNavi {
                 case .back:
