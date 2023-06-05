@@ -10,10 +10,11 @@ import SwiftUI
 struct TaskEditView: View {
     @Binding var isSave: Bool
     
-    @StateObject var taskEditViewModel = TaskEditViewModel()
-    @State var taskList = [String]()
-    @State var task = ""
-    @State var index = 0
+    @StateObject private var taskEditViewModel = TaskEditViewModel()
+    @State private var taskList = [String]()
+    @State private var task = ""
+    @State private var index = 0
+    @State private var isEditUpdate = false
     let characterLimit = 10
     
     var body: some View {
@@ -48,7 +49,7 @@ struct TaskEditView: View {
                         addTask()
                         newTasks()
                     } label: {
-                        Text("추가하기")
+                        Text("추가하기 \(task)")
                             .font(.subheadline)
                             .foregroundColor(.black.opacity(0.6))
                             .padding(.top, 20)
@@ -72,6 +73,12 @@ struct TaskEditView: View {
             return 
         }
         taskList.append(task)
+    }
+    
+    func updateTask(index: Int, new: String) {
+        if taskEditViewModel.oldTaskList[index] != new {
+            task = "kkkkkk"
+        }
     }
     
     func saveTasks() {

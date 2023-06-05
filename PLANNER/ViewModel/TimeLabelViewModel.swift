@@ -18,16 +18,14 @@ class TimeLabelViewModel: ObservableObject {
         let time = Time()
         time.hour = self.timeHour
         time.time = self.timeLabel
-        let filter = NSPredicate(format: "task == %@", task)
         
-        realmLocalDataBase.updateData(filter) { task in
+        realmLocalDataBase.updateData(dataFilter("task", task)) { task in
             task.taskTime.append(time)
         }
     }
     
     func timeUpdate(_ task: String) {
-        let filter = NSPredicate(format: "task == %@", task)
-        realmLocalDataBase.updateData(filter) { task in
+        realmLocalDataBase.updateData(dataFilter("task", task)) { task in
             task.taskTime.forEach { t in
                 if t.time > self.timeLabel {
                     t.time = self.timeLabel
@@ -38,8 +36,11 @@ class TimeLabelViewModel: ObservableObject {
     
     // task 데이터 가져오기
     func getTaskList(_ task: String) -> [Task] {
-        let filter = NSPredicate(format: "task == %@", task)
-        let filteringData = realmLocalDataBase.getFilteringData(filter)
+        let filteringData = realmLocalDataBase.getFilteringData(dataFilter("task", task))
         return filteringData.map({$0})
+    }
+    
+    func dataFilter(_ format: String, _ args: CVarArg) -> NSPredicate {
+        return realmLocalDataBase.dataFiltering(format: format, args: args)
     }
 }

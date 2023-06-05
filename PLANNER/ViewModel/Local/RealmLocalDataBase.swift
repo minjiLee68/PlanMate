@@ -11,6 +11,11 @@ import RealmSwift
 struct RealmLocalDataBase<T: Object> {
     private var realm = try! Realm()
     
+    // 필터링
+    func dataFiltering(format: String, args: CVarArg) -> NSPredicate {
+        return NSPredicate(format: "\(format) == %@", args)
+    }
+    
     // 데이터 추가
     func addData(_ object: T) {
         try! realm.write({
@@ -42,8 +47,8 @@ struct RealmLocalDataBase<T: Object> {
     }
     
     // 데이터 삭제
-    func deleteData() {
-        let objects = realm.objects(T.self)
+    func deleteData(_ filter: NSPredicate) {
+        let objects = realm.objects(T.self).filter(filter)
         try! realm.write {
             realm.delete(objects)
         }

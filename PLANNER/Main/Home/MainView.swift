@@ -10,10 +10,11 @@ import SwiftUI
 struct MainView: View {
     @StateObject var homeViewModel = MainHomeViewModel()
     
+    @State private var taskList = [String]()
+    @State private var colorList = [Color]()
+    
     @State private var isTaskClick = false
-    @State private var isTaskTimeLineEd = false
     @State private var isColorPick = false
-    @State private var isTaskAdd = false
     @State private var isSave = false
     
     @State private var showDeleteAlert = false
@@ -24,8 +25,6 @@ struct MainView: View {
     @State private var totalTime = ""
     @State var pickColor = ""
     
-    @State private var offset = CGSize.zero
-
     var body: some View {
         if #available(iOS 16.0, *) {
             NavigationStack {
@@ -53,7 +52,7 @@ struct MainView: View {
         .padding(.horizontal, 30)
         .onAppear {
             getTasks()
-            if let firstTask = homeViewModel.taskList.first {
+            if let firstTask = taskList.first {
                 taskLabel = String(describing: firstTask)
             } else {
                 taskLabel = ""
@@ -75,20 +74,25 @@ struct MainView: View {
                 editButtonLink() // 편집 버튼
             }
             
-            ForEach(homeViewModel.taskList.indices, id: \.self) { i in
-                VStack(alignment: .leading, spacing: 12) {
-                    
-                    taskList(index: i)
-                    
-                    Divider()
+            if taskList.isEmpty {
+                addButtonLink() // 추가하기 버튼
+            } else {
+                ForEach(0..<taskList.count, id: \.self) { i in
+                    VStack(alignment: .leading, spacing: 12) {
+                        
+                        taskList(index: i)
+                        
+                        Divider()
+                    }
+                    .onChange(of: pickColor) { newValue in
+                        isColorPick = false
+                        colorUpdate(index: colorIndex)
+                    }
                 }
-                .onChange(of: pickColor) { newValue in
-                    isColorPick = false
-                    colorUpdate(index: colorIndex)
-                }
+                
+                addButtonLink() // 추가하기 버튼
             }
-            
-            addButtonLink() // 추가하기 버튼
+
         }
         .padding(.top, 50)
     }
@@ -96,27 +100,27 @@ struct MainView: View {
     @ViewBuilder
     func taskList(index: Int) -> some View {
         ZStack {
-            gestureMode()
+            gestureMode(index: index)
             
             HStack(spacing: 0) {
                 Button {
                     isTaskClick.toggle()
-                    taskLabel = homeViewModel.taskList[index]
+                    taskLabel = taskList[index]
                     totalTime = "\(index)"
                 } label: {
-                    Text(homeViewModel.taskList[index])
+                    Text(taskList[index])
                         .foregroundColor(.black)
                 }
-
+                
                 Spacer()
-
+                
                 Button {
                     isColorPick.toggle()
                     colorIndex = index
                 } label: {
                     Circle()
                         .frame(width: 20)
-                        .foregroundColor(homeViewModel.colors[index])
+                        .foregroundColor(colorList[index])
                 }
                 .sheet(isPresented: $isColorPick) {
                     if #available(iOS 16.0, *) {
@@ -136,7 +140,7 @@ struct MainView: View {
                 }
             }
             .background(Color.white)
-        .modifier(DraggableModifier(direction: .horizontal, showDeleteAlert: $showDeleteAlert, dragMode: $dragMode))
+            .modifier(DraggableModifier(direction: .horizontal, showDeleteAlert: $showDeleteAlert, dragMode: $dragMode))
         }
     }
     
@@ -156,7 +160,7 @@ struct MainView: View {
             }
             
             Spacer()
-
+            
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 10)
@@ -170,14 +174,14 @@ extension MainView {
         NavigationLink(
             destination: TimeLabelView(
                 selectTask: taskLabel,
-                selectTasks: homeViewModel.taskList,
-                selectColors: homeViewModel.colors
+                selectTasks: taskList,
+                selectColors: colorList
             ),label: {
                 Text("편집")
                     .foregroundColor(.black)
                     .bold()
                     .font(.caption)
-                    .opacity(homeViewModel.taskList.isEmpty ? 0 : 1)
+                    .opacity(taskList.isEmpty ? 0 : 1)
             }
         )
     }
@@ -197,30 +201,36 @@ extension MainView {
     }
     
     @ViewBuilder
-    func gestureMode() -> some View {
-        GeometryReader { geo in
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    showDeleteAlert.toggle()
+    func gestureMode(index: Int) -> some View {
+        if !taskList.isEmpty {
+            GeometryReader { geo in
+                HStack {
+                    Spacer()
                     
-                }, label: {
-                    Text("삭제")
-                })
-                .frame(width: 60)
+                    Button(action: {
+                        showDeleteAlert.toggle()
+                        
+                        homeViewModel.deleteTask(task: taskList[index])
+                        
+                        taskList.remove(at: index)
+                    }, label: {
+                        Text("삭제 \(index)")
+                    })
+                    .frame(width: 60)
+                }
+                .frame(height: geo.size.height)
             }
-            .frame(height: geo.size.height)
         }
     }
     
     func getTasks() {
-        homeViewModel.getTaskList()
+        taskList = homeViewModel.getTaskList()
+        colorList = homeViewModel.getColorList()
     }
     
     func colorUpdate(index: Int) {
-        homeViewModel.colors[index] = EnumColor.colorPick(color: pickColor)
-        homeViewModel.colorUpdate(task: homeViewModel.taskList[index], color: pickColor)
+        colorList[index] = EnumColor.colorPick(color: pickColor)
+        homeViewModel.colorUpdate(task: taskList[index], color: pickColor)
     }
 }
 

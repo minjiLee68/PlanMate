@@ -28,9 +28,18 @@ class TaskEditViewModel: ObservableObject {
     }
     
     // task 데이터 수정
+    func updateTask(task: String) {
+        realmLocalDataBase.updateData(dataFilter("task", task)) { t in
+            t.task = task
+        }
+    }
 
     // 모든 task 데이터 삭제
-    func deleteTask() {
-        realmLocalDataBase.deleteData()
+    func deleteTask(task: String) {
+        realmLocalDataBase.deleteData(dataFilter("task", task))
+    }
+    
+    func dataFilter(_ format: String, _ args: CVarArg) -> NSPredicate {
+        return realmLocalDataBase.dataFiltering(format: format, args: args)
     }
 }
