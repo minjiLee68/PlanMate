@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TaskEditView: View {
     @Binding var isSave: Bool
-    
     @StateObject private var taskEditViewModel = TaskEditViewModel()
     @State private var taskList = [String]()
     @State private var task = ""
@@ -33,12 +32,12 @@ struct TaskEditView: View {
                     .font(.headline)
                 
                 VStack(spacing: 10) {
-                    ForEach(taskEditViewModel.oldTaskList.indices, id: \.self) { index in
+                    ForEach(taskEditViewModel.agoTaskList.indices, id: \.self) { index in
                         TextField(
                             "TASK \(index + 1)",
-                            text: $taskEditViewModel.oldTaskList[index]
+                            text: $taskEditViewModel.agoTaskList[index]
                         )
-                        .onChange(of: taskEditViewModel.oldTaskList[index]) { newValue in
+                        .onChange(of: taskEditViewModel.agoTaskList[index]) { newValue in
                             task = newValue
                             self.index = index
                         }
@@ -50,7 +49,7 @@ struct TaskEditView: View {
                         addTask()
                         newTasks()
                     } label: {
-                        Text("추가하기 \(task)")
+                        Text("추가하기")
                             .font(.subheadline)
                             .foregroundColor(.black.opacity(0.6))
                             .padding(.top, 20)
@@ -78,8 +77,12 @@ struct TaskEditView: View {
     
     func saveTasks(index: Int) {
         newTasks()
-        if taskEditViewModel.getTaskList()[index] != taskEditViewModel.oldTaskList[index] {
-            taskEditViewModel.updateTask(task: taskEditViewModel.getTaskList()[index], updateTask: taskEditViewModel.oldTaskList[index])
+        
+        let getTaskList = taskEditViewModel.getTaskList()[index]
+        let agoTaskList = taskEditViewModel.agoTaskList[index]
+        
+        if getTaskList != agoTaskList {
+            taskEditViewModel.updateTask(task: getTaskList, updateTask: agoTaskList)
         } else {
             for i in taskList.indices {
                 taskEditViewModel.setTask(task: taskList[i])
@@ -88,11 +91,11 @@ struct TaskEditView: View {
     }
     
     func addTask() {
-        taskEditViewModel.oldTaskList.append("")
+        taskEditViewModel.agoTaskList.append("")
     }
     
     func getTasks() {
-        taskEditViewModel.oldTaskList = taskEditViewModel.getTaskList()
+        taskEditViewModel.agoTaskList = taskEditViewModel.getTaskList()
     }
 }
 

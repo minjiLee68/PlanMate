@@ -26,10 +26,14 @@ class MainHomeViewModel: ObservableObject {
     func getColorList() -> [Color] {
         let data = realmLocalDataBase.getData()
         let colorArray = Array(data.map({$0.color}))
-        colorArray.forEach { color in
-            if colors.count != colorArray.count {
-                print("color \(color)")
+        
+        if colors.count != colorArray.count {
+            colorArray.forEach { color in
                 colors.append(EnumColor.colorPick(color: color))
+            }
+        } else {
+            for i in colorArray.indices {
+                colors[i] = EnumColor.colorPick(color: colorArray[i])
             }
         }
         return colors

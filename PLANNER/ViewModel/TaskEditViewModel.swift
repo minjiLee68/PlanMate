@@ -10,7 +10,7 @@ import SwiftUI
 
 class TaskEditViewModel: ObservableObject {
     var realmLocalDataBase = RealmLocalDataBase<Task>()
-    @Published var oldTaskList = [String]()
+    @Published var agoTaskList = [String]()
     
     // task 데이터 추가
     func setTask(task: String) {
