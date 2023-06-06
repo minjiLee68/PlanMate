@@ -11,6 +11,10 @@ import RealmSwift
 struct RealmLocalDataBase<T: Object> {
     private var realm = try! Realm()
     
+    func getRealmFile() {
+        print("realm data \(Realm.Configuration.defaultConfiguration.fileURL!)")
+    }
+    
     // 필터링
     func dataFiltering(format: String, args: CVarArg) -> NSPredicate {
         return NSPredicate(format: "\(format) == %@", args)
@@ -25,7 +29,6 @@ struct RealmLocalDataBase<T: Object> {
     
     func getData() -> Results<T> {
         let results = realm.objects(T.self)
-        print("realm data \(Realm.Configuration.defaultConfiguration.fileURL!)")
         return results
     }
     

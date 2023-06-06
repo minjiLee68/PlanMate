@@ -23,7 +23,7 @@ struct TaskEditView: View {
                 NavigationBarView (
                     isSaveButton: {
                         isSave = true
-                        saveTasks()
+                        saveTasks(index: index)
                     },
                     naviTitle: "",
                     enumNavi: .save
@@ -40,6 +40,7 @@ struct TaskEditView: View {
                         )
                         .onChange(of: taskEditViewModel.oldTaskList[index]) { newValue in
                             task = newValue
+                            self.index = index
                         }
                         
                         Divider()
@@ -75,16 +76,14 @@ struct TaskEditView: View {
         taskList.append(task)
     }
     
-    func updateTask(index: Int, new: String) {
-        if taskEditViewModel.oldTaskList[index] != new {
-            task = "kkkkkk"
-        }
-    }
-    
-    func saveTasks() {
+    func saveTasks(index: Int) {
         newTasks()
-        for i in taskList.indices {
-            taskEditViewModel.setTask(task: taskList[i])
+        if taskEditViewModel.getTaskList()[index] != taskEditViewModel.oldTaskList[index] {
+            taskEditViewModel.updateTask(task: taskEditViewModel.getTaskList()[index], updateTask: taskEditViewModel.oldTaskList[index])
+        } else {
+            for i in taskList.indices {
+                taskEditViewModel.setTask(task: taskList[i])
+            }
         }
     }
     
@@ -93,7 +92,7 @@ struct TaskEditView: View {
     }
     
     func getTasks() {
-        taskEditViewModel.getTaskList()
+        taskEditViewModel.oldTaskList = taskEditViewModel.getTaskList()
     }
 }
 

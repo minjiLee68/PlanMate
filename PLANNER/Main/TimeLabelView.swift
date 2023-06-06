@@ -26,7 +26,7 @@ struct TimeLabelView: View {
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     NavigationBarView(
-                        naviTitle: selectTask,
+                        naviTitle: "",
                         enumNavi: .back)
                     
                     Picker("selectTask", selection: $selectTask) {
@@ -153,12 +153,19 @@ struct ButtonView: View {
             for taskTime in task.taskTime {
                 guard timeHour == taskTime.hour else { continue }
                 timeLabelViewModel.timeLabel = taskTime.time
+                
+                if taskTime.time < taskInt {
+                    for i in taskTime.time..<taskInt {
+                        buttonColorList[i] = EnumColor.colorPick(color: task.color)
+                        boolArray[i] = true
+                    }
+                    return
+                }
+                
                 for i in taskInt..<taskTime.time {
-                    print("taskInt \(i)")
                     taskInt = taskTime.time
                     buttonColorList[i] = EnumColor.colorPick(color: task.color)
                     boolArray[i] = true
-                    print("task color \(task.color)")
                 }
             }
         }

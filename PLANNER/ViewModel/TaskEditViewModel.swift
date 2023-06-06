@@ -21,16 +21,16 @@ class TaskEditViewModel: ObservableObject {
     }
     
     // task 데이터 가져오기
-    func getTaskList() {
+    func getTaskList() -> [String] {
         let data = realmLocalDataBase.getData()
         let taskList = Array(data.map { $0.task })
-        oldTaskList = taskList
+        return taskList
     }
     
     // task 데이터 수정
-    func updateTask(task: String) {
+    func updateTask(task: String, updateTask: String) {
         realmLocalDataBase.updateData(dataFilter("task", task)) { t in
-            t.task = task
+            t.task = updateTask
         }
     }
 

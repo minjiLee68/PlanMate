@@ -16,6 +16,7 @@ class MainHomeViewModel: ObservableObject {
     
     // task 데이터 가져오기
     func getTaskList() -> [String] {
+        realmLocalDataBase.getRealmFile()
         let data = realmLocalDataBase.getData()
         let taskArray = Array(data.map { $0.task })
         return taskArray
@@ -27,6 +28,7 @@ class MainHomeViewModel: ObservableObject {
         let colorArray = Array(data.map({$0.color}))
         colorArray.forEach { color in
             if colors.count != colorArray.count {
+                print("color \(color)")
                 colors.append(EnumColor.colorPick(color: color))
             }
         }
