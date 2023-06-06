@@ -1,0 +1,83 @@
+//
+//  HistoryViewModel.swift
+//  PLANNER
+//
+//  Created by 이민지 on 2023/06/07.
+//
+
+import SwiftUI
+
+class HistoryViewModel: ObservableObject {
+    let realmLocalDataBase = RealmLocalDataBase<Task>()
+    @Published var getTimeContent = [String]()
+    
+    // 총 소요 시간
+    func getTaskTime(_ task: String) {
+        let data = realmLocalDataBase.getFilteringData(dataFilter("task", task))
+        
+        data.forEach { task in
+            let timeData = Array(task.taskTime)
+            
+            getTimeContent = [
+                getTotalTime(timeData),
+                getStartTime(timeData),
+                getEndTime(timeData),
+                getPeakHours(timeData)
+            ]
+        }
+    }
+    
+    func getTotalTime(_ data: [Time]) -> String {
+        var total = 0
+        var timeText = ""
+        var totalDuration = 0
+        
+        for time in data {
+            total += time.time * 15
+            if total > 60 {
+                totalDuration = total / 60
+                timeText = "시간"
+            } else {
+                totalDuration = total
+                timeText = "분"
+            }
+        }
+        return "총 소요 시간 : \(totalDuration) \(timeText)"
+    }
+    
+    func getStartTime(_ data: [Time]) -> String {
+        var startTime = data.first?.time ?? 0
+        for time in data {
+            if startTime > time.hour {
+                startTime = time.hour
+            }
+        }
+        return "시작 시간 : \(startTime) 시"
+    }
+    
+    func getEndTime(_ data: [Time]) -> String {
+        var endTime = data.first?.time ?? 0
+        for time in data {
+            if endTime < time.hour {
+                endTime = time.hour
+            }
+        }
+        return "작업이 마쳐진 시간 : \(endTime) 시"
+    }
+    
+    func getPeakHours(_ data: [Time]) -> String {
+        var peakTime = 0
+        var peak = 0
+        for time in data {
+            if peak != time.time && peak < time.time {
+                peak = time.time
+                peakTime = time.hour
+            }
+        }
+        return "작업이 활발한 시간 : \(peakTime) 시"
+    }
+    
+    func dataFilter(_ format: String, _ args: CVarArg) -> NSPredicate {
+        return realmLocalDataBase.dataFiltering(format: format, args: args)
+    }
+}

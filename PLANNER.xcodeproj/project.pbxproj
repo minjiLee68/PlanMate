@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A296B1A2A2F9748003FF6D1 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A296B192A2F9748003FF6D1 /* HistoryViewModel.swift */; };
 		0A5B8A692A29D4FA0019CC77 /* DraggableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8A682A29D4FA0019CC77 /* DraggableModifier.swift */; };
 		0A7A07CC2A2727F000D4CB2F /* MainHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */; };
 		0A7A07CE2A2728C200D4CB2F /* EnumColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A296B192A2F9748003FF6D1 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		0A5B8A682A29D4FA0019CC77 /* DraggableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableModifier.swift; sourceTree = "<group>"; };
 		0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHomeViewModel.swift; sourceTree = "<group>"; };
 		0A7A07CD2A2728C200D4CB2F /* EnumColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumColor.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				0A8D64D12A25EFDA00D7D5BD /* TaskEditViewModel.swift */,
 				0A7A07CB2A2727F000D4CB2F /* MainHomeViewModel.swift */,
 				0A7A07D62A27D85200D4CB2F /* TimeLabelViewModel.swift */,
+				0A296B192A2F9748003FF6D1 /* HistoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				0A7A07CC2A2727F000D4CB2F /* MainHomeViewModel.swift in Sources */,
 				0A8D64D82A270B8800D7D5BD /* RealmLocalDataBase.swift in Sources */,
 				0A8D64CA2A25D25600D7D5BD /* TaskEditView.swift in Sources */,
+				0A296B1A2A2F9748003FF6D1 /* HistoryViewModel.swift in Sources */,
 				0AF4A7AC2A1C858C00085DFE /* ColorPaletteView.swift in Sources */,
 				0A7A07CE2A2728C200D4CB2F /* EnumColor.swift in Sources */,
 				0A7A07D32A2792A500D4CB2F /* HistoryView.swift in Sources */,

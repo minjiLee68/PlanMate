@@ -18,59 +18,76 @@ struct TaskEditView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 30) {
-                NavigationBarView (
-                    isSaveButton: {
-                        isSave = true
-                        saveTasks(index: index)
-                    },
-                    naviTitle: "",
-                    enumNavi: .save
+            navigationViewAndSubView()
+        }
+        .onAppear {
+            isSave = false
+            getTasks()
+        }
+        .navigationBarBackButtonHidden()
+    }
+    
+    @ViewBuilder
+    func navigationViewAndSubView() -> some View {
+        VStack(alignment: .leading, spacing: 30) {
+            NavigationBarView (
+                isSaveButton: {
+                    isSave = true
+                    saveTasks(index: index)
+                },
+                naviTitle: "",
+                enumNavi: .save
+            )
+            
+            Text("Task를 추가해보세요.")
+                .font(.headline)
+            
+            taskEditView()
+            
+            Spacer()
+        }
+        .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    func taskEditView() -> some View {
+        VStack(spacing: 10) {
+            ForEach(taskEditViewModel.agoTaskList.indices, id: \.self) { index in
+                TextField(
+                    "TASK \(index + 1)",
+                    text: $taskEditViewModel.agoTaskList[index]
                 )
-                
-                Text("Task를 추가해보세요.")
-                    .font(.headline)
-                
-                VStack(spacing: 10) {
-                    ForEach(taskEditViewModel.agoTaskList.indices, id: \.self) { index in
-                        TextField(
-                            "TASK \(index + 1)",
-                            text: $taskEditViewModel.agoTaskList[index]
-                        )
-                        .onChange(of: taskEditViewModel.agoTaskList[index]) { newValue in
-                            task = newValue
-                            self.index = index
-                        }
-                        
-                        Divider()
-                    }
-                    
-                    Button {
-                        addTask()
-                        newTasks()
-                    } label: {
-                        Text("추가하기")
-                            .font(.subheadline)
-                            .foregroundColor(.black.opacity(0.6))
-                            .padding(.top, 20)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                    }
+                .onChange(of: taskEditViewModel.agoTaskList[index]) { newValue in
+                    task = newValue
+                    self.index = index
                 }
                 
-                Spacer()
+                Divider()
             }
-            .padding(.horizontal)
-            .navigationBarBackButtonHidden()
-            .onAppear {
-                isSave = false
-                getTasks()
-            }
+            
+            addButtonView()
         }
     }
     
+    @ViewBuilder
+    func addButtonView() -> some View {
+        Button {
+            addTask()
+            newTasks()
+        } label: {
+            Text("추가하기")
+                .font(.subheadline)
+                .foregroundColor(.black.opacity(0.6))
+                .padding(.top, 20)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+    }
+}
+
+extension TaskEditView {
     func newTasks() {
         if task == "" {
-            return 
+            return
         }
         taskList.append(task)
     }

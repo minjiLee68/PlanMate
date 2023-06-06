@@ -8,36 +8,46 @@
 import SwiftUI
 
 struct HistoryView: View {
+    @StateObject private var viewModel = HistoryViewModel()
     @Binding var taskLabel: String
     @Binding var totalTime: String
+    
+    @State var times = [Time]()
     
     var body: some View {
         VStack(spacing: 12) {
             SubTitle(title: "HISTORY")
             
             VStack(spacing: 15) {
-                historyContentText(taskName: taskLabel, time: totalTime)
+                historyContentView()
             }
         }
         .padding(.top, 20)
+        .onChange(of: taskLabel, perform: { _ in
+            viewModel.getTaskTime(taskLabel)
+        })
     }
     
-    // history content text
     @ViewBuilder
-    func historyContentText(taskName: String, time: String) -> some View {
-        let taskLabel = taskName
-        let totalTime = ["총 소요 시간", "시작 시간", "작업이 마쳐진 시간", "작업이 활발한 시간"]
-        
+    func historyContentView() -> some View {
         Text(taskLabel)
             .font(.subheadline)
             .frame(maxWidth: .infinity, alignment: .leading)
         
-        ForEach(totalTime.indices, id: \.self) { index in
-            Text("\(totalTime[index]) : \(time) 시간")
+        ForEach(viewModel.getTimeContent, id: \.self) { content in
+            Text(content)
                 .foregroundColor(.black)
                 .font(.subheadline)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+    
+    @ViewBuilder
+    func timeContentView(_ content: String) -> some View {
+        Text(content)
+            .foregroundColor(.black)
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

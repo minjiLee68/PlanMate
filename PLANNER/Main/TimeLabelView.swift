@@ -11,59 +11,22 @@ struct TimeLabelView: View {
     @State var selectTask: String
     @State var selectTasks: [String]
     @State var selectColors: [Color]
-    @State var color: Color = .white
-    let timeText = 6..<24
-    let timeTextWidth: CGFloat = 40
+    @State private var color: Color = .white
+    private let timeText = 6..<24
+    private let timeTextWidth: CGFloat = 40
     
     var body: some View {
         ZStack {
-//            HStack {
-//                Divider()
-//            }
-//            .padding(.leading, timeTextWidth)
-//            .frame(maxWidth: .infinity, alignment: .leading)
-            
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     NavigationBarView(
                         naviTitle: "",
                         enumNavi: .back)
                     
-                    Picker("selectTask", selection: $selectTask) {
-                        ForEach(selectTasks, id: \.self) { task in
-                            HStack(spacing: 0) {
-                                Text(task)
-                                
-                                Spacer()
-                                
-                                Circle()
-                                    .frame(width: 20)
-                                    .foregroundColor(color)
-                            }
-                        }
-                    }
-                    .pickerStyle(.automatic)
-                    .accentColor(.black.opacity(0.7))
-                    .font(.callout)
-                    .cornerRadius(5)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    pickerView()
                 }
                 
-                ForEach(timeText, id: \.self) { i in
-                    VStack(spacing: 0) {
-                        HStack(spacing: 0) {
-                            Text("\(i)")
-                                .foregroundColor(.black)
-                                .padding(.horizontal, 5)
-                                .frame(width: timeTextWidth)
-                            
-                            ButtonView(selectTask: $selectTask, color: $color, timeHour: timeText[i])
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Divider()
-                    }
-                }
+                timeLabelButtonView()
             }
             .onChange(of: selectTask) { newValue in
                 for i in selectTasks.indices {
@@ -81,6 +44,47 @@ struct TimeLabelView: View {
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden()
     }
+    
+    @ViewBuilder
+    func pickerView() -> some View {
+        Picker("selectTask", selection: $selectTask) {
+            ForEach(selectTasks, id: \.self) { task in
+                HStack(spacing: 0) {
+                    Text(task)
+                    
+                    Spacer()
+                    
+                    Circle()
+                        .frame(width: 20)
+                        .foregroundColor(color)
+                }
+            }
+        }
+        .pickerStyle(.automatic)
+        .accentColor(.black.opacity(0.7))
+        .font(.callout)
+        .cornerRadius(5)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+    
+    @ViewBuilder
+    func timeLabelButtonView() -> some View {
+        ForEach(timeText, id: \.self) { i in
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    Text("\(i)")
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 5)
+                        .frame(width: timeTextWidth)
+                    
+                    ButtonView(selectTask: $selectTask, color: $color, timeHour: timeText[i])
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Divider()
+            }
+        }
+    }
 }
 
 struct ButtonView: View {
@@ -88,20 +92,20 @@ struct ButtonView: View {
     @Binding var selectTask: String
     @Binding var color: Color
     @State var timeHour: Int
-    @State private var boolArray = [false, false, false, false]
+    @State private var buttonList = [false, false, false, false]
     @State private var buttonColorList = [Color]()
     @State private var draggedColumnIndex: Int = 0
     let timeCheckButtonCount = 0..<5
     
     var body: some View {
-        ForEach(boolArray.indices, id: \.self) { index in
+        ForEach(buttonList.indices, id: \.self) { index in
             Button {
-                boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
+                buttonList[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
                 buttonColorListAppend(index: index) // 색상 업데이트
                 timeLabelCheck(index: index)
             } label: {
                 RoundedRectangle(cornerRadius: 0)
-                    .fill(boolArray[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
+                    .fill(buttonList[index] ? colors(forIndex: index) : Color.gray.opacity(0.1))
             }
 //            .frame(width: 80)
             .padding(.vertical, 4)
@@ -115,9 +119,9 @@ struct ButtonView: View {
 //                        let dragPositionInt = Int(dragPosition.x)
 //                        let columnIndex = dragPositionInt / 60
 //
-//                        if columnIndex != draggedColumnIndex && columnIndex < boolArray.count {
+//                        if columnIndex != draggedColumnIndex && columnIndex < buttonList.count {
 //                            draggedColumnIndex = columnIndex
-//                            boolArray[columnIndex].toggle() // 드래그 동작 시 버튼 색상을 변경
+//                            buttonList[columnIndex].toggle() // 드래그 동작 시 버튼 색상을 변경
 //                            testColorData() // 색상 업데이트
 //                        }
 //                    }
@@ -134,7 +138,7 @@ struct ButtonView: View {
     }
     
     func timeLabelCheck(index: Int) {
-        if boolArray[index] == true {
+        if buttonList[index] == true {
             timeLabelViewModel.timeLabel += 1
             timeLabelViewModel.timeHour = timeHour
             timeLabelViewModel.setTime(selectTask)
@@ -146,7 +150,7 @@ struct ButtonView: View {
     }
     
     func getTimeLabelColor() {
-        buttonColorList = Array(repeating: .white, count: boolArray.count)
+        buttonColorList = Array(repeating: .white, count: buttonList.count)
         let tasks = timeLabelViewModel.getTaskList()
         var taskInt: Int = 0
         for task in tasks {
@@ -157,7 +161,7 @@ struct ButtonView: View {
                 if taskTime.time < taskInt {
                     for i in taskTime.time..<taskInt {
                         buttonColorList[i] = EnumColor.colorPick(color: task.color)
-                        boolArray[i] = true
+                        buttonList[i] = true
                     }
                     return
                 }
@@ -165,7 +169,7 @@ struct ButtonView: View {
                 for i in taskInt..<taskTime.time {
                     taskInt = taskTime.time
                     buttonColorList[i] = EnumColor.colorPick(color: task.color)
-                    boolArray[i] = true
+                    buttonList[i] = true
                 }
             }
         }
@@ -175,6 +179,6 @@ struct ButtonView: View {
 
 struct TimeLabelView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeLabelView(selectTask: "", selectTasks: [""], selectColors: [.white])
+        TimeLabelView(selectTask: "", selectTasks: [""], selectColors: [.gray])
     }
 }

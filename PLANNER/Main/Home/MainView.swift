@@ -52,11 +52,6 @@ struct MainView: View {
         .padding(.horizontal, 30)
         .onAppear {
             getTasks()
-            if let firstTask = taskList.first {
-                taskLabel = String(describing: firstTask)
-            } else {
-                taskLabel = ""
-            }
         }
         .onChange(of: isSave) { newValue in
             if newValue {
@@ -226,6 +221,7 @@ extension MainView {
     func getTasks() {
         taskList = homeViewModel.getTaskList()
         colorList = homeViewModel.getColorList()
+        taskLabel = taskList.first ?? ""
     }
     
     func colorUpdate(index: Int) {
