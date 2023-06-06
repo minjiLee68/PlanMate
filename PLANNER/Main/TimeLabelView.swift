@@ -97,7 +97,7 @@ struct ButtonView: View {
         ForEach(boolArray.indices, id: \.self) { index in
             Button {
                 boolArray[index].toggle() // 버튼 색상을 변경하기 위해 toggle 사용
-                testColorData() // 색상 업데이트
+                buttonColorListAppend(index: index) // 색상 업데이트
                 timeLabelCheck(index: index)
             } label: {
                 RoundedRectangle(cornerRadius: 0)
@@ -106,7 +106,7 @@ struct ButtonView: View {
 //            .frame(width: 80)
             .padding(.vertical, 4)
             .onAppear {
-//                getTimeLabelColor()
+                getTimeLabelColor()
             }
 //            .simultaneousGesture(
 //                DragGesture(minimumDistance: 0)
@@ -125,15 +125,8 @@ struct ButtonView: View {
         }
     }
     
-    func testColorData() {
-        buttonColorListAppend(color: color)
-    }
-    
-    func buttonColorListAppend(color: Color) {
-        if buttonColorList.count >= 4 {
-            return
-        }
-        buttonColorList.append(color)
+    func buttonColorListAppend(index: Int) {
+        buttonColorList[index] = color
     }
     
     func colors(forIndex index: Int) -> Color {
@@ -148,15 +141,26 @@ struct ButtonView: View {
         } else {
             timeLabelViewModel.timeLabel -= 1
             timeLabelViewModel.timeHour = timeHour
-            timeLabelViewModel.timeUpdate(selectTask)
+            timeLabelViewModel.setTime(selectTask)
         }
     }
     
     func getTimeLabelColor() {
-        let tasks = timeLabelViewModel.getTaskList(selectTask)
-        for i in tasks.indices {
-            let color = EnumColor.colorPick(color: tasks[i].color)
-            buttonColorList.append(color)
+        buttonColorList = Array(repeating: .white, count: boolArray.count)
+        let tasks = timeLabelViewModel.getTaskList()
+        var taskInt: Int = 0
+        for task in tasks {
+            for taskTime in task.taskTime {
+                guard timeHour == taskTime.hour else { continue }
+                timeLabelViewModel.timeLabel = taskTime.time
+                for i in taskInt..<taskTime.time {
+                    print("taskInt \(i)")
+                    taskInt = taskTime.time
+                    buttonColorList[i] = EnumColor.colorPick(color: task.color)
+                    boolArray[i] = true
+                    print("task color \(task.color)")
+                }
+            }
         }
     }
 }
