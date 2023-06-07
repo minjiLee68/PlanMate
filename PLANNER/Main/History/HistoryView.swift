@@ -23,6 +23,9 @@ struct HistoryView: View {
             }
         }
         .padding(.top, 20)
+        .onAppear {
+            viewModel.getTaskTime(taskLabel)
+        }
         .onChange(of: taskLabel, perform: { _ in
             viewModel.getTaskTime(taskLabel)
         })

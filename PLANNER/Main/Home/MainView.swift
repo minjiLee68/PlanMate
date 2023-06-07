@@ -204,6 +204,7 @@ extension MainView {
                     
                     Button(action: {
                         showDeleteAlert.toggle()
+                        dragMode.toggle()
                         
                         homeViewModel.deleteTask(task: taskList[index])
                         

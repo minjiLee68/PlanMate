@@ -46,13 +46,18 @@ class HistoryViewModel: ObservableObject {
     }
     
     func getStartTime(_ data: [Time]) -> String {
-        var startTime = data.first?.time ?? 0
+        var startTime = data.first?.hour ?? 0
         for time in data {
             if startTime > time.hour {
                 startTime = time.hour
             }
         }
-        return "시작 시간 : \(startTime) 시"
+        if startTime > 12 {
+            startTime -= 12
+            return "시작 시간 : 오후 \(startTime) 시"
+        }
+        
+        return "시작 시간 : 오전 \(startTime) 시"
     }
     
     func getEndTime(_ data: [Time]) -> String {
@@ -62,19 +67,35 @@ class HistoryViewModel: ObservableObject {
                 endTime = time.hour
             }
         }
-        return "작업이 마쳐진 시간 : \(endTime) 시"
+        if endTime > 12 {
+            endTime -= 12
+            return "작업이 마쳐진 시간 : 오후 \(endTime) 시"
+        }
+        
+        return "작업이 마쳐진 시간 : 오전 \(endTime) 시"
     }
     
     func getPeakHours(_ data: [Time]) -> String {
-        var peakTime = 0
+        var firstPeakTime = 0
+        var lastPeakTime = 0
         var peak = 0
+        
         for time in data {
             if peak != time.time && peak < time.time {
                 peak = time.time
-                peakTime = time.hour
+                firstPeakTime = time.hour
+            }
+            if peak == time.time {
+                lastPeakTime = time.hour
             }
         }
-        return "작업이 활발한 시간 : \(peakTime) 시"
+        if firstPeakTime > 12 && lastPeakTime > 12 {
+            firstPeakTime -= 12
+            lastPeakTime -= 12
+            return "작업이 활발한 시간 : 오후 \(firstPeakTime) ~ \(lastPeakTime) 시"
+        }
+        
+        return "작업이 활발한 시간 : 오전 \(firstPeakTime) ~ \(lastPeakTime) 시"
     }
     
     func dataFilter(_ format: String, _ args: CVarArg) -> NSPredicate {
