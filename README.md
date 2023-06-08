@@ -11,14 +11,23 @@
 
 -----------------------------
 
+#### Main
+
 planMate의 main 화면이다. 사용자가 직접 task를 작성한다.
 
 <img src="https://github.com/minjiLee68/PlanMate/assets/88191880/d4c51a3e-ea66-4ca5-936e-7eaa1503769f.png" width="280" height="600"/>
 
 -------------------------------
 
+#### Time Label
+
 사용자가 직접 각 task에 원하는 color point를 준다.
 사용자의 작업이 완료가 되면 작업이 시작된 시간을 기준으로 작업을 하는데 할애된 시간만큼 체크할 수 있다. 사용자가 task 별로 정해준 색상이 나타나기 때문에 어떤 작업이 어떻게 이루어졌는지
 한 눈에 파악할 수 있다.
 
 <img src="https://github.com/minjiLee68/PlanMate/assets/88191880/831899e9-0a2a-4980-ab79-9e13927290f0.png" width="280" height="600"/> <img src="https://github.com/minjiLee68/PlanMate/assets/88191880/9901dcb2-60ff-47d8-bb67-13f6869cebd5.png" width="280" height="600"/>
+
+---------------------------------
+
+#### History
+
