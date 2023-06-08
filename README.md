@@ -8,4 +8,4 @@
 분배할 수 있도록 도와줍니다.
 
 ## App 소개
-
+<img src="https://github.com/minjiLee68/PlanMate/assets/88191880/d4c51a3e-ea66-4ca5-936e-7eaa1503769f.png" width="280" height="600"/>
