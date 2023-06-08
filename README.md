@@ -31,3 +31,7 @@ planMate의 main 화면이다. 사용자가 직접 task를 작성한다.
 
 #### History
 
+main 화면에서 작업이름을 클릭하면 작업별로 작업이 시작된 시간, 작업이 끝난 시간, 작업이 이루어진 시간 등을 보여주기 때문에 사용자의 작업 시간을 파악할 수 있어 동기부여가 된다.
+
+<img src="https://github.com/minjiLee68/PlanMate/assets/88191880/cc3ea0c6-8f9f-4006-a0d8-6d4b0c70ce5c.png" width="280" height="600"/>
+
