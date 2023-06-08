@@ -11,10 +11,13 @@
 
 -----------------------------
 
-### planMate의 main 화면이다. 사용자가 직접 task를 작성한다.
+planMate의 main 화면이다. 사용자가 직접 task를 작성한다.
 
 <img src="https://github.com/minjiLee68/PlanMate/assets/88191880/d4c51a3e-ea66-4ca5-936e-7eaa1503769f.png" width="280" height="600"/>
 
 -------------------------------
 
-### 
+사용자가 직접 각 task에 원하는 color point를 준다.
+
+
+<img src="https://github.com/minjiLee68/PlanMate/assets/88191880/831899e9-0a2a-4980-ab79-9e13927290f0.png" width="280" height="600"/>
